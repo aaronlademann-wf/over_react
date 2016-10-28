@@ -96,6 +96,7 @@ typedef dynamic _RefTypedef(String ref);
 abstract class UiComponent<TProps extends UiProps> extends react.Component {
   /// The props for the non-forwarding props defined in this component.
   Iterable<ConsumedProps> get consumedProps => null;
+
   /// Returns the component of the specified [ref].
   /// > `react.Component` if it is a Dart component
   /// > DOM node if it is a DOM component.
@@ -107,16 +108,14 @@ abstract class UiComponent<TProps extends UiProps> extends react.Component {
 
   /// Returns a copy of this component's props with [consumedPropKeys] omitted.
   Map copyUnconsumedProps() {
-    var consumedPropKeys =
-        (consumedProps?.map((ConsumedProps consumedProps) => consumedProps.keys) ?? const []) as Iterable<Iterable>;
+    var consumedPropKeys = consumedProps?.map((ConsumedProps consumedProps) => consumedProps.keys) ?? const [];
 
     return copyProps(keySetsToOmit: consumedPropKeys);
   }
 
   /// Returns a copy of this component's props with [consumedPropKeys] and non-DOM props omitted.
   Map copyUnconsumedDomProps() {
-    var consumedPropKeys =
-        (consumedProps?.map((ConsumedProps consumedProps) => consumedProps.keys) ?? const []) as Iterable<Iterable>;
+    var consumedPropKeys = consumedProps?.map((ConsumedProps consumedProps) => consumedProps.keys) ?? const [];
 
     return copyProps(onlyCopyDomProps: true, keySetsToOmit: consumedPropKeys);
   }
@@ -169,7 +168,7 @@ abstract class UiComponent<TProps extends UiProps> extends react.Component {
   //
 
   // Keep this Expando unparameterized to work around this bug: https://code.google.com/p/dart/issues/detail?id=18713
-  Expando _typedPropsCache = new Expando();
+  Expando<TProps> _typedPropsCache = new Expando<TProps>();
 
   /// A typed props object corresponding to the current untyped props Map ([unwrappedProps]).
   ///
@@ -177,7 +176,7 @@ abstract class UiComponent<TProps extends UiProps> extends react.Component {
   @override
   TProps get props {
     var unwrappedProps = this.unwrappedProps;
-    var typedProps = _typedPropsCache[unwrappedProps] as TProps;
+    var typedProps = _typedPropsCache[unwrappedProps];
     if (typedProps == null) {
       typedProps = typedPropsFactory(unwrappedProps);
       _typedPropsCache[unwrappedProps] = typedProps;
@@ -220,7 +219,7 @@ abstract class UiStatefulComponent<TProps extends UiProps, TState extends UiStat
   //
 
    // Keep this Expando unparameterized to work around this bug: https://code.google.com/p/dart/issues/detail?id=18713
-  Expando _typedStateCache = new Expando();
+  Expando<TState> _typedStateCache = new Expando<TState>();
 
   /// A typed state object corresponding to the current untyped state Map ([unwrappedState]).
   ///
@@ -228,7 +227,7 @@ abstract class UiStatefulComponent<TProps extends UiProps, TState extends UiStat
   @override
   TState get state {
     var unwrappedState = this.unwrappedState;
-    var typedState = _typedStateCache[unwrappedState] as TState;
+    var typedState = _typedStateCache[unwrappedState];
     if (typedState == null) {
       typedState = typedStateFactory(unwrappedState);
       _typedStateCache[unwrappedState] = typedState;

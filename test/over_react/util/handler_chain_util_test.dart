@@ -46,13 +46,13 @@ main() {
       ///
       /// Expects callback arguments to be typed to [TestGenericType].
       void sharedTests(CallbackUtil callbackUtil, int arity) {
-        List generateArgs() {
+        List<TestGenericType> generateArgs() {
           return new List.generate(arity, (_) => new TestGenericType());
         }
 
-        List<TestGenericType> generateBadTypeArgs() {
+        List<Object> generateBadTypeArgs() {
           // ignore: Type check failed
-          return new List.generate(arity, (_) => new Object() as TestGenericType);
+          return new List.generate(arity, (_) => new Object());
         }
 
         group('chain()', () {
