@@ -16,26 +16,33 @@ library over_react.css_value_util;
 
 import 'package:quiver/core.dart';
 
-/// A CSS length value, with a number and unit component, for use in CSS properties such as `width`, `top`, `padding`, etc.
+/// A CSS length value, with a number and unit component, for use in CSS properties such as
+/// `width`, `top`, `padding`, etc.
 class CssValue implements Comparable<CssValue> {
-  /// The number component of this CSS value.
+  /// The number component of this [CssValue].
   ///
   /// E.g., 1 for '1px'
   final num number;
 
-  /// The unit component of this CSS value.
+  /// The unit component of this [CssValue].
   ///
   /// E.g., 'px' for '1px'
   final String unit;
 
-  /// Creates a new [CssValue]. If no [unit] is specified, `'px'` is used instead.
+  /// Creates a new [CssValue].
+  ///
+  /// If no [unit] is specified, `'px'` is used instead.
   const CssValue(this.number, [this.unit = 'px']);
 
   /// Parse [source] and return its [CssValue] representation.
   ///
-  /// Accepts a number optionally followed by a CSS length unit. If no unit is present, `'px'` is used as the unit instead.
+  /// [source]:
   ///
-  /// If `source` is not a valid CSS value, the [onError] callback is called with [source] and an error object, and its return value is used instead. If no `onError` is provided, `null` is returned.
+  ///   * Accepts a [number] optionally followed by a CSS length [unit].
+  ///     * If no unit is present, `'px'` is used as the unit instead.
+  ///   * If not a valid CSS value, the [onError] callback is called with
+  ///     [source] and an [error] object, and its return value is used instead.
+  ///       * If no [onError] is provided, `null` is returned.
   ///
   /// Examples of accepted values:
   ///
@@ -45,7 +52,10 @@ class CssValue implements Comparable<CssValue> {
   ///     '1.25em'
   ///     '-15%'
   factory CssValue.parse(dynamic source, {CssValue onError(value, error)}) {
+    /// See: [CssValue.number]
     num number;
+
+    /// See: [CssValue.unit]
     String unit;
 
     var error;

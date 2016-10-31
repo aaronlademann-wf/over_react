@@ -14,7 +14,7 @@
 
 library over_react.prop_errors;
 
-/// Error thrown dues to a prop being set incorrectly.
+/// Error thrown due to a prop being set incorrectly.
 class PropError extends Error {
   static const String defaultPrefix = 'PropError: ';
   static const String requiredPrefix = 'RequiredPropError: ';

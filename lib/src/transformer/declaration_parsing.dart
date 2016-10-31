@@ -27,9 +27,18 @@ import 'package:transformer_utils/transformer_utils.dart';
 ///
 /// Can include:
 ///
-/// * A single component declared using a `@Factory()`, `@Component()`, `@Props()`, and optionally a `@State()`
-/// * Any number of abstract component pieces: `@AbstractComponent()`, `@AbstractProps()`, `@AbstractState()`
-/// * Any number of mixins: `@PropsMixin()`, `@StateMixin()`
+/// * A single component declared using:
+///   * @[annotations.Factory]
+///   * @[annotations.Component]
+///   * @[annotations.Props]
+///   * @[annotations.State] _(optional)_
+/// * Any number of abstract component pieces:
+///   * @[annotations.AbstractComponent]
+///   * @[annotations.AbstractProps]
+///   * @[annotations.AbstractState]
+/// * Any number of mixins:
+///   * @[annotations.PropsMixin]
+///   * @[annotations.StateMixin]
 class ParsedDeclarations {
   factory ParsedDeclarations(CompilationUnit unit, SourceFile sourceFile, TransformLogger logger) {
     bool hasErrors = false;

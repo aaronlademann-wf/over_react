@@ -33,7 +33,7 @@ Iterable<Element> _hierarchy(Element element) sync* {
 }
 
 /// Returns the closest element in the hierarchy of [lowerBound] up to an optional [upperBound] (both inclusive)
-/// that matches [selector], or `null if no matches are found.
+/// that matches [selector], or `null` if no matches are found.
 Element closest(Element lowerBound, String selector, {Element upperBound}) {
   for (var element in _hierarchy(lowerBound)) {
     if (element.matches(selector)) return element;

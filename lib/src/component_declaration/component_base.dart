@@ -134,10 +134,10 @@ abstract class UiComponent<TProps extends UiProps> extends react.Component {
     });
   }
 
-  /// Returns a new ClassNameBuilder with className and blacklist values added from [CssClassProps.className] and
-  /// [CssClassProps.classNameBlackList], if they are specified.
+  /// Returns a new ClassNameBuilder with [CssClassPropsMixin.className] and [CssClassPropsMixin.classNameBlacklist],
+  /// if they are specified.
   ///
-  /// This method should be used as the basis for the classNames of components receiving forwarded props.
+  /// This method should be used as the basis for the `className` prop value of components receiving forwarded props.
   ClassNameBuilder forwardingClassNameBuilder() {
     return new ClassNameBuilder.fromProps(this.props);
   }
@@ -158,12 +158,14 @@ abstract class UiComponent<TProps extends UiProps> extends react.Component {
   //   BEGIN Typed props helpers
   //
 
-  // Keep this Expando unparameterized to work around this bug: https://code.google.com/p/dart/issues/detail?id=18713
+  /// Keep this Expando unparameterized to work around [this bug](https://github.com/dart-lang/sdk/issues/18713).
+  ///
+  /// TODO: Parameterize this once https://github.com/dart-lang/sdk/issues/18713 is closed.
   Expando _typedPropsCache = new Expando();
 
-  /// A typed props object corresponding to the current untyped props Map ([unwrappedProps]).
+  /// A typed [react.Component.props] object corresponding to the current untyped props [Map] ([unwrappedProps]).
   ///
-  /// Created using [typedPropsFactory] and cached for each Map instance.
+  /// Created using [typedPropsFactory] and cached for each [Map] instance.
   @override
   TProps get props {
     var unwrappedProps = this.unwrappedProps;
@@ -183,10 +185,12 @@ abstract class UiComponent<TProps extends UiProps> extends react.Component {
   set unwrappedProps(Map value) => super.props = value;
 
   /// Returns a typed props object backed by the specified [propsMap].
+  ///
   /// Required to properly instantiate the generic [TProps] class.
   TProps typedPropsFactory(Map propsMap);
 
-  /// Returns a typed props object backed by a new Map.
+  /// Returns a typed props object backed by a new [Map].
+  ///
   /// Convenient for use with [getDefaultProps].
   TProps newProps() => typedPropsFactory({});
 
@@ -198,7 +202,7 @@ abstract class UiComponent<TProps extends UiProps> extends react.Component {
 
 /// The basis for a stateful over_react component.
 ///
-/// Includes support for strongly-typed props and state and utilities for prop and CSS classname forwarding.
+/// Includes support for strongly-typed props and state and utilities for prop and CSS `className` forwarding.
 ///
 /// Extends [react.Component].
 ///
@@ -209,12 +213,14 @@ abstract class UiStatefulComponent<TProps extends UiProps, TState extends UiStat
   //   BEGIN Typed state helpers
   //
 
-   // Keep this Expando unparameterized to work around this bug: https://code.google.com/p/dart/issues/detail?id=18713
+  /// Keep this Expando unparameterized to work around [this bug](https://github.com/dart-lang/sdk/issues/18713).
+  ///
+  /// TODO: Parameterize this once https://github.com/dart-lang/sdk/issues/18713 is closed.
   Expando _typedStateCache = new Expando();
 
-  /// A typed state object corresponding to the current untyped state Map ([unwrappedState]).
+  /// A typed state object corresponding to the current untyped state [Map] ([unwrappedState]).
   ///
-  /// Created using [typedStateFactory] and cached for each Map instance.
+  /// Created using [typedStateFactory] and cached for each [Map] instance.
   @override
   TState get state {
     var unwrappedState = this.unwrappedState;
@@ -234,10 +240,12 @@ abstract class UiStatefulComponent<TProps extends UiProps, TState extends UiStat
   set unwrappedState(Map value) => super.state = value;
 
   /// Returns a typed state object backed by the specified [stateMap].
+  ///
   /// Required to properly instantiate the generic [TState] class.
   TState typedStateFactory(Map stateMap);
 
   /// Returns a typed state object backed by a new Map.
+  ///
   /// Convenient for use with [getInitialState] and [setState].
   TState newState() => typedStateFactory({});
 
@@ -248,27 +256,27 @@ abstract class UiStatefulComponent<TProps extends UiProps, TState extends UiStat
 }
 
 
-/// A [dart.collection.MapView]-like class with strongly-typed getters/setters for React state.
+/// A [MapView]-like class with strongly-typed getters/setters for React state.
 ///
-/// Note: Implements MapViewMixin instead of extending it so that the abstract [State] declarations
+/// Note: Implements [MapViewMixin] instead of extending it so that the abstract [State] declarations
 /// don't need a constructor. The generated implementations can mix that functionality in.
 abstract class UiState extends Object with MapViewMixin, StateMapViewMixin implements Map {}
 
 /// The string used by default for the key of the attribute added by [UiProps.addTestId].
-const defaultTestIdKey = 'data-test-id';
+const String defaultTestIdKey = 'data-test-id';
 
 /// Enforces that a function take a single parameter of type [Map].
 ///
 /// Used in [UiProps.modifyProps].
 typedef PropsModifier(Map props);
 
-/// A [dart.collection.MapView]-like class with strongly-typed getters/setters for React props that
-/// is also capable of creating React component instances.
+/// A [MapView]-like class with strongly-typed getters/setters for React props that
+/// is also capable of creating [react.Component] instances.
 ///
-/// For use as a typed view into existing props [Maps], or as a builder to create new component
+/// For use as a typed view into existing props [Map]s, or as a builder to create new component
 /// instances via a fluent-style interface.
 ///
-/// Note: Implements MapViewMixin instead of extending it so that the abstract [Props] declarations
+/// Note: Implements [MapViewMixin] instead of extending it so that the abstract [Props] declarations
 /// don't need a constructor. The generated implementations can mix that functionality in.
 abstract class UiProps
     extends Object with MapViewMixin, PropsMapViewMixin, ReactPropsMixin, UbiquitousDomPropsMixin, CssClassPropsMixin
@@ -305,6 +313,7 @@ abstract class UiProps
   /// Used in [addTestId].
   ///
   /// TODO: Only use bool.fromEnvironment() when it is supported in Dartium.
+  ///
   /// See: <https://github.com/dart-lang/pub/issues/798>.
   bool get _inTestMode => testMode || _testModeFromEnvironment;
 
@@ -407,7 +416,7 @@ abstract class UiProps
   Function get componentFactory;
 }
 
-/// Works in conjunction with [MapViewMixin] to provide [dart.collection.MapView]-like
+/// Works in conjunction with [MapViewMixin] to provide [MapView]-like
 /// functionality to [UiProps] subclasses.
 abstract class PropsMapViewMixin {
   /// The props maintained by this builder and used passed into the component when built.
@@ -489,7 +498,7 @@ class StateDescriptor {
   const StateDescriptor(this.key, {this.isRequired: false, this.isNullable: false, this.errorMessage});
 }
 
-/// Provides a list of [PropDescriptor] and a top-level list of their keys, for easy access.
+/// Provides a list of [PropDescriptor]s and a top-level list of their keys, for easy access.
 class ConsumedProps {
   /// Rich views of props.
   ///

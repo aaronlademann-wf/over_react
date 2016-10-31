@@ -78,6 +78,7 @@ class CallbackUtil0Arg extends CallbackUtil<Callback0Arg> {
   Callback0Arg get noop => _noop;
 
   /// Returns a strongly-typed chained callback that calls through to the two provided callbacks, [a] and [b], in order.
+  ///
   /// Useful for executing multiple callbacks where only a single callback is accepted.
   ///
   /// Returns `false` if one or more of the provided callbacks returns `false`.
@@ -109,6 +110,7 @@ class CallbackUtil1Arg<T> extends CallbackUtil<Callback1Arg<T>> {
   Callback1Arg<T> get noop => _noop;
 
   /// Returns a strongly-typed chained callback that calls through to the two provided callbacks, [a] and [b], in order.
+  ///
   /// Useful for executing multiple callbacks where only a single callback is accepted.
   ///
   /// Returns `false` if one or more of the provided callbacks returns `false`.
@@ -140,6 +142,7 @@ class CallbackUtil2Arg<T1, T2> extends CallbackUtil<Callback2Arg<T1, T2>> {
   Callback2Arg<T1, T2> get noop => _noop;
 
   /// Returns a strongly-typed chained callback that calls through to the two provided callbacks, [a] and [b], in order.
+  ///
   /// Useful for executing multiple callbacks where only a single callback is accepted.
   ///
   /// Returns `false` if one or more of the provided callbacks returns `false`.
@@ -171,6 +174,7 @@ class CallbackUtil3Arg<T1, T2, T3> extends CallbackUtil<Callback3Arg<T1, T2, T3>
   Callback3Arg<T1, T2, T3> get noop => _noop;
 
   /// Returns a strongly-typed chained callback that calls through to the two provided callbacks, [a] and [b], in order.
+  ///
   /// Useful for executing multiple callbacks where only a single callback is accepted.
   ///
   /// Returns `false` if one or more of the provided callbacks returns `false`.
@@ -196,6 +200,7 @@ abstract class CallbackUtil<TTypedef extends Function> {
   const CallbackUtil();
 
   /// Returns a strongly-typed chained callback that calls through to the two provided callbacks, [a] and [b], in order.
+  ///
   /// Useful for executing multiple callbacks where only a single callback is accepted.
   ///
   /// Returns `false` if one or more of the provided callbacks returns `false`.

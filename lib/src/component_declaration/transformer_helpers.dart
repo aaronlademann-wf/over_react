@@ -88,7 +88,7 @@ class GeneratedClass {
 
 /// See: [component_base.UiComponent]
 ///
-/// Use with the over_react transformer via the `@Component()` ([annotations.Component]) annotation.
+/// Use with the over_react transformer via the @[annotations.Component] annotation.
 abstract class UiComponent<TProps extends UiProps> extends component_base.UiComponent<TProps> with GeneratedClass {
   /// This class should not be instantiated directly, and throws an error to indicate this.
   UiComponent() {
@@ -99,7 +99,7 @@ abstract class UiComponent<TProps extends UiProps> extends component_base.UiComp
   @toBeGenerated
   Iterable<component_base.ConsumedProps> get $defaultConsumedProps => throw new UngeneratedError(member: #$defaultConsumedProps);
 
-  /// The keys for the non-forwarding props defined in this component.
+  /// The keys for the non-forwarding props defined in this [UiComponent].
   ///
   /// For generated components, this defaults to the keys generated in the associated @[annotations.Props] class
   /// if this getter is not overridden.
@@ -107,6 +107,7 @@ abstract class UiComponent<TProps extends UiProps> extends component_base.UiComp
   Iterable<component_base.ConsumedProps> get consumedProps => $defaultConsumedProps;
 
   /// Returns a typed props object backed by the specified [propsMap].
+  ///
   /// Required to properly instantiate the generic [TProps] class.
   @override
   @toBeGenerated
@@ -116,7 +117,7 @@ abstract class UiComponent<TProps extends UiProps> extends component_base.UiComp
 
 /// See: [component_base.UiStatefulComponent]
 ///
-/// Use with the over_react transformer via the `@Component()` ([annotations.Component]) annotation.
+/// Use with the over_react transformer via the @[annotations.Component] annotation.
 abstract class UiStatefulComponent<TProps extends UiProps, TState extends UiState>
     extends component_base.UiStatefulComponent<TProps, TState> with GeneratedClass {
   /// This class should not be instantiated directly, and throws an error to indicate this.
@@ -148,13 +149,13 @@ abstract class UiStatefulComponent<TProps extends UiProps, TState extends UiStat
   @override @toBeGenerated TState typedStateFactory(Map stateMap) => throw new UngeneratedError(member: #typedStateFactory);
 }
 
-/// A [dart.collection.MapView]-like class with strongly-typed getters/setters for React props that
-/// is also capable of creating React component instances.
+/// A [MapView]-like class with strongly-typed getters/setters for React props that
+/// is also capable of creating [react.Component] instances.
 ///
 /// For use as a typed view into existing props [Map]s, or as a builder to create new component
 /// instances via a fluent-style interface.
 ///
-/// Use with the over_react transformer via the `@Props()` ([annotations.Props]) annotation.
+/// Use with the over_react transformer via the @[annotations.Props] annotation.
 abstract class UiProps extends component_base.UiProps with GeneratedClass {
   /// This class should not be instantiated directly, and throws an error to indicate this.
   UiProps() {
@@ -167,9 +168,9 @@ abstract class UiProps extends component_base.UiProps with GeneratedClass {
   @override @toBeGenerated Function get componentFactory => throw new UngeneratedError(member: #componentFactory);
 }
 
-/// A [dart.collection.MapView]-like class with strongly-typed getters/setters for React state.
+/// A [MapView]-like class with strongly-typed getters/setters for React state.
 ///
-/// Use with the over_react transformer via the `@State()` ([annotations.State]) annotation.
+/// Use with the over_react transformer via the @[annotations.State] annotation.
 abstract class UiState extends component_base.UiState with GeneratedClass {
   /// This class should not be instantiated directly, and throws an error to indicate this.
   UiState() {
@@ -193,7 +194,7 @@ class _ToBeGenerated {
   const _ToBeGenerated();
 }
 
-/// Thrown when stubbed code (usually annotated with [ToBeGenerated]) that expects to be
+/// Thrown when stubbed code (usually annotated with [toBeGenerated]) that expects to be
 /// overridden by generated code is called unexpectedly.
 ///
 /// Usually this is due to improper usage of the code-generating transformer.

@@ -23,7 +23,8 @@ import 'package:over_react/over_react.dart';
 abstract class AbstractTransitionProps extends UiProps {
   /// Number of transitions to occur within the [AbstractTransitionComponent].
   ///
-  /// _If the [AbstractTransitionComponent] does not transition set [AbstractTransitionProps.transition] to [Transition.NONE] rather than setting this to 0._
+  /// _If the [AbstractTransitionComponent] does not transition, set
+  /// [AbstractTransitionComponent.hasTransition] to `false` rather than setting this to 0._
   ///
   /// Default: 1
   int transitionCount;
@@ -49,7 +50,7 @@ abstract class AbstractTransitionProps extends UiProps {
 abstract class AbstractTransitionState extends UiState {
   /// The current phase of transition the [AbstractTransitionComponent] is in.
   ///
-  /// Default:  [AbstractTransitionComponent.initiallyShown] ? [TransitionState.SHOWN] : [TransitionState.HIDDEN]
+  /// Default:  [AbstractTransitionComponent.initiallyShown] ? [TransitionPhase.SHOWN] : [TransitionPhase.HIDDEN]
   TransitionPhase transitionPhase;
 }
 
@@ -100,7 +101,8 @@ abstract class AbstractTransitionState extends UiState {
 ///   * [hide]
 ///   * [toggle]
 @AbstractComponent()
-abstract class AbstractTransitionComponent<T extends AbstractTransitionProps, S extends AbstractTransitionState> extends UiStatefulComponent<T, S> {
+abstract class AbstractTransitionComponent<T extends AbstractTransitionProps, S extends AbstractTransitionState>
+      extends UiStatefulComponent<T, S> {
   @override
   Map getDefaultProps() => (newProps()
     ..transitionCount = 1
@@ -120,7 +122,7 @@ abstract class AbstractTransitionComponent<T extends AbstractTransitionProps, S 
   /// Returns the DOM node that will transition.
   Element getTransitionDomNode();
 
-  /// Whether the Element returned by [getTransitionDomNode] will have a transition event.
+  /// Whether the [Element] returned by [getTransitionDomNode] will have a transition event.
   bool get hasTransition => true;
 
   // --------------------------------------------------------------------------
@@ -128,6 +130,7 @@ abstract class AbstractTransitionComponent<T extends AbstractTransitionProps, S 
   // --------------------------------------------------------------------------
 
   /// Begin showing the [AbstractTransitionComponent], unless:
+  ///
   ///   * The [AbstractTransitionComponent] is already shown or is in the process of showing.
   ///   * The [AbstractTransitionProps.onWillShow] callback returns `false`.
   void _handleShow() {
@@ -148,6 +151,7 @@ abstract class AbstractTransitionComponent<T extends AbstractTransitionProps, S 
   }
 
   /// Begin hiding the [AbstractTransitionComponent], unless:
+  ///
   ///   * The [AbstractTransitionComponent] is already hidden or is in the process of being hidden.
   ///   * The [AbstractTransitionProps.onWillHide] callback returns `false`.
   void _handleHide() {
@@ -196,7 +200,18 @@ abstract class AbstractTransitionComponent<T extends AbstractTransitionProps, S 
 
   /// Whether the [AbstractTransitionComponent] should render.
   ///
-  /// If this is false your [render] should return false.
+  /// If this returns `false` your component's [render] method should return null:
+  ///
+  ///     @Component()
+  ///     class CustomComponent extends AbstractTransitionComponent<CustomComponentProps, CustomComponentState> {
+  ///       @override
+  ///       render() {
+  ///         if (!shouldRender) return null;
+  ///
+  ///         // Or whatever it is that your component is supposed to render.
+  ///         return Dom.div()();
+  ///       }
+  ///     }
   bool get shouldRender =>
       state.transitionPhase != TransitionPhase.HIDDEN;
 
@@ -223,16 +238,16 @@ abstract class AbstractTransitionComponent<T extends AbstractTransitionProps, S 
   // Lifecycle Methods
   // --------------------------------------------------------------------------
 
-  /// Whether the overlay is not guaranteed to transition in response to the current
-  /// state change.
+  /// Whether the [Element] is not guaranteed to transition in response to the current state change.
   ///
   /// _Stored as variable as workaround for not adding breaking change to [handleHiding] API._
   ///
-  /// A transition may not always occur when the state moves from SHOWING to HIDING
-  /// if the PRE_SHOWING-->SHOWING-->HIDING transition happens back-to-back.
+  /// A transition may not always occur when the state moves from [TransitionPhase.SHOWING] to [TransitionPhase.HIDING]
+  /// if the [TransitionPhase.PRE_SHOWING] -> [TransitionPhase.SHOWING] -> [TransitionPhase.HIDING] transition happens
+  /// back-to-back.
   ///
-  /// Better to not always transition when the user is ninja-toggling a transitionable
-  /// component than to break state changes waiting for a transition that will never happen.
+  /// It is better to not always transition when the user is ninja-toggling a transitionable
+  /// component rather than break state changes waiting for a transition that will never happen.
   bool _transitionNotGuaranteed = false;
 
   @override
@@ -284,7 +299,8 @@ abstract class AbstractTransitionComponent<T extends AbstractTransitionProps, S 
   /// Method that will be called right before the [AbstractTransitionComponent] begins to hide.
   void prepareHide() {}
 
-  /// Method that will be called when [AbstractTransitionComponent]  first enters the `preShowing` state.
+  /// Method that will be called when [AbstractTransitionComponent]  first enters the
+  /// [TransitionPhase.PRE_SHOWING] state.
   void handlePreShowing() {
     onNextTransitionEnd(() {
       if (state.transitionPhase == TransitionPhase.SHOWING) {
@@ -294,7 +310,8 @@ abstract class AbstractTransitionComponent<T extends AbstractTransitionProps, S 
       }
     });
 
-    // Force a repaint by accessing `offsetHeight` so that the changes to CSS classes are guaranteed to trigger a transition when it is applied
+    // Force a repaint by accessing `offsetHeight` so that the changes to CSS classes are guaranteed to
+    // trigger a transition when it is applied.
     getTransitionDomNode()?.offsetHeight;
 
     setState(newState()
@@ -302,10 +319,10 @@ abstract class AbstractTransitionComponent<T extends AbstractTransitionProps, S 
     );
   }
 
-  /// Method that will be called when [AbstractTransitionComponent]  first enters the `showing` state.
+  /// Method that will be called when [AbstractTransitionComponent]  first enters the [TransitionPhase.SHOWING] state.
   void handleShowing() {}
 
-  /// Method that will be called when [AbstractTransitionComponent]  first enters the `hiding` state.
+  /// Method that will be called when [AbstractTransitionComponent]  first enters the [TransitionPhase.HIDING] state.
   void handleHiding() {
     if (_transitionNotGuaranteed) {
       // No transition will occur, so kick off the state change manually.
@@ -330,15 +347,14 @@ abstract class AbstractTransitionComponent<T extends AbstractTransitionProps, S 
     }
   }
 
-  /// Method that will be called when [AbstractTransitionComponent]  first enters the `hidden` state.
+  /// Method that will be called when [AbstractTransitionComponent]  first enters the [TransitionPhase.HIDDEN] state.
   void handleHidden() {
     if (props.onDidHide != null) {
       props.onDidHide();
     }
   }
 
-
-  /// Method that will be called when [AbstractTransitionComponent]  first enters the `shown` state.
+  /// Method that will be called when [AbstractTransitionComponent]  first enters the [TransitionPhase.SHOWN] state.
   void handleShown() {
     if (props.onDidShow != null) {
       props.onDidShow();
@@ -359,13 +375,14 @@ abstract class AbstractTransitionComponent<T extends AbstractTransitionProps, S 
     _handleHide();
   }
 
-  /// Toggles the visibility of the [AbstractTransitionComponent] based on the value of [AbstractTransitionState.transitionPhase].
+  /// Toggles the visibility of the [AbstractTransitionComponent] based on the value of
+  /// [AbstractTransitionState.transitionPhase].
   void toggle() {
     if (isOrWillBeShown) {
-      /// If the [AbstractTransitionComponent] is shown or in the process of showing, hide it.
+      // If the `AbstractTransitionComponent` is shown or in the process of showing, hide it.
       hide();
     } else if (isOrWillBeHidden) {
-      /// If the [AbstractTransitionComponent] is hidden or in the process of hiding, show it.
+      // If the `AbstractTransitionComponent` is hidden or in the process of hiding, show it.
       show();
     }
   }
@@ -373,14 +390,17 @@ abstract class AbstractTransitionComponent<T extends AbstractTransitionProps, S 
 
 /// The transition phase of the [AbstractTransitionComponent].
 enum TransitionPhase {
-  /// > SHOWN: The [AbstractTransitionComponent] is done transitioning to a visible / "shown" state.
+  /// The [AbstractTransitionComponent] is done transitioning to a visible / "shown" state.
   SHOWN,
-  /// > HIDDEN: The [AbstractTransitionComponent] is done transitioning to a hidden state.
+  /// The [AbstractTransitionComponent] is done transitioning to a hidden state.
   HIDDEN,
-  /// > HIDING: The CSS class that triggers transitions has been removed from the [AbstractTransitionComponent], and an `onTransitionEnd` listener is active.
+  /// The CSS class that triggers transitions has been removed from the [AbstractTransitionComponent],
+  /// and an [Element.onTransitionEnd] listener is active.
   HIDING,
-  /// > PRE_SHOWING: The [AbstractTransitionComponent] is mounted in the DOM, ready to be shown, and an `onTransitionEnd` listener is set up.
+  /// The [AbstractTransitionComponent] is mounted in the DOM, ready to be shown,
+  /// and an [Element.onTransitionEnd] listener is set up.
   PRE_SHOWING,
-  /// > SHOWING: The CSS class that triggers transitions is added to the [AbstractTransitionComponent], and an `onTransitionEnd` listener is active.
+  /// The CSS class that triggers transitions is added to the [AbstractTransitionComponent],
+  /// and an [Element.onTransitionEnd] listener is active.
   SHOWING
 }

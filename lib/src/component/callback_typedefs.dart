@@ -16,15 +16,49 @@ library over_react.callback_typedefs;
 
 import 'package:react/react.dart' as react;
 
-// Callbacks for React's DOM event system
+/// Generic event callback that takes a single [event] argument.
+///
+/// See: [react.SyntheticEvent]
 typedef DomEventCallback(react.SyntheticEvent event);
+
+/// Event callback that takes a single [event] argument.
+///
+/// See: [react.SyntheticClipboardEvent]
 typedef ClipboardEventCallback(react.SyntheticClipboardEvent event);
+
+/// Event callback that takes a single [event] argument.
+///
+/// See: [react.SyntheticKeyboardEvent]
 typedef KeyboardEventCallback(react.SyntheticKeyboardEvent event);
+
+/// Event callback that takes a single [event] argument.
+///
+/// See: [react.SyntheticFocusEvent]
 typedef FocusEventCallback(react.SyntheticFocusEvent event);
+
+/// Event callback that takes a single [event] argument.
+///
+/// See: [react.SyntheticFormEvent]
 typedef FormEventCallback(react.SyntheticFormEvent event);
+
+/// Event callback that takes a single [event] argument.
+///
+/// See: [react.SyntheticMouseEvent]
 typedef MouseEventCallback(react.SyntheticMouseEvent event);
+
+/// Event callback that takes a single [event] argument.
+///
+/// See: [react.SyntheticTouchEvent]
 typedef TouchEventCallback(react.SyntheticTouchEvent event);
+
+/// Event callback that takes a single [event] argument.
+///
+/// See: [react.SyntheticUIEvent]
 typedef UIEventCallback(react.SyntheticUIEvent event);
+
+/// Event callback that takes a single [event] argument.
+///
+/// See: [react.SyntheticWheelEvent]
 typedef WheelEventCallback(react.SyntheticWheelEvent event);
 
 /// A generic callback that takes no arguments.

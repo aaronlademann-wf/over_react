@@ -24,25 +24,27 @@ import 'package:transformer_utils/src/text_util.dart' show stringLiteral;
 import 'package:transformer_utils/src/transformed_source_file.dart' show getSpan;
 import 'package:transformer_utils/transformer_utils.dart';
 
-/// A utility class that modifies a [TransformedSourceFile] by generating implementations for a set of [ParsedDeclarations].
+/// A utility class that modifies a [TransformedSourceFile] by generating implementations for a set
+/// of [ParsedDeclarations].
 ///
 /// Generates implementations for:
 ///
-/// * A component commprised of a `@Factory()`, `@Component()`, `@Props()`, and optionally a `@State()`
+/// * A component comprised of a @[annotations.Factory], @[annotations.Component], @[annotations.Props],
+/// and optionally a @[annotations.State]
 ///
 ///     * Generates:
 ///
-///          * private subclasses for the component, props, and state classes, implementing stubbed methods.
-///          * a private React component factory via a call to `registerComponent`.
+///          * Private subclasses for the component, props, and state classes, implementing stubbed methods.
+///          * A private React component factory via a call to `react.registerComponent`.
 ///
 ///     * Wires up all the generated component pieces and exposes them via a function assigned to
 ///     the previously uninitialized factory function variable.
 ///
-/// * Any number of abstract component pieces: `@AbstractProps()`, `@AbstractState()`
+/// * Any number of abstract component pieces: @[annotations.AbstractProps], @[annotations.AbstractState]
 ///
 ///     * Replaces fields with generated getters/setters.
 ///
-/// * Any number of mixins: `@PropsMixin()`, `@StateMixin()`
+/// * Any number of mixins: @[annotations.PropsMixin], @[annotations.StateMixin]
 ///
 ///     * Replaces fields with generated getters/setters.
 class ImplGenerator {
@@ -130,6 +132,7 @@ class ImplGenerator {
       if (parentTypeParam == componentFactoryName) {
         /// It doesn't make sense to have a component subtype itself, and also an error occurs
         /// if a component's factory variable tries to reference itself during its initialization.
+        ///
         /// Therefore, this is not allowed.
         logger.error('A component cannot be a subtype of itself.',
             span: getSpan(sourceFile, declarations.component.metaNode)

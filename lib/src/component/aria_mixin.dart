@@ -21,13 +21,21 @@ import 'dart:collection';
 import 'package:over_react/over_react.dart' show PropDescriptor, ConsumedProps;
 import 'package:over_react/src/component_declaration/annotations.dart';
 
-/// Typed getters/setters for accessibility props.
-/// To be used as a mixin for React components and builders.
+/// Typed getters/setters for "Aria" accessibility props.
+///
+/// Convenient for adding Aria props inline to components:
+///
+///     SomeComponentProps theseProps = SomeComponent.props;
+///
+///     theseProps
+///       ..addProps(ariaProps()..label = 'describe something to an AT user');
+///
+/// See: <https://www.w3.org/TR/wai-aria/>
 @PropsMixin(keyNamespace: '')
 abstract class AriaPropsMixin {
   Map get props;
 
-  /// Identifies the currently active descendant of a compositewidget.
+  /// Identifies the currently active descendant of a composite widget.
   ///
   /// This is used when a composite widget is responsible for managing its current active child
   /// to reduce the overhead of having all children be focusable. Examples include: multi-level

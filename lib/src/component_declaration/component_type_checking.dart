@@ -101,23 +101,22 @@ class ComponentTypeMeta {
 /// * [ReactClass] component factory
 /// * [String] tag name (DOM components only)
 ///
-/// If there is no type associated with [typeAlias], then `null` is returned.
+/// * If there is no type associated with [typeAlias], then `null` is returned.
+///   * This may be the case if [typeAlias] is invalid, or if the associated component hasn't been
+///     registered yet due to lazy-instantiation of the [ReactComponentFactoryProxy] variables.
+///   * Consumers of this function should be sure to take this case into consideration.
 ///
-/// This may be the case if [typeAlias] is invalid, or if the associated component hasn't been
-/// registered yet due to lazy-instantiation of the [ReactComponentFactoryProxy] variables.
-///
-/// Consumers of this function should be sure to take the latter case into consideration.
-///
-/// __CAVEAT:__ Due to type-checking limitations on JS-interop types, when [typeAlias] is a [Function],
+/// > __CAVEAT:__ Due to type-checking limitations on JS-interop types, when [typeAlias] is a [Function],
 /// and it is not found to be an alias for another type, it will be returned as if it were a valid type.
 dynamic getComponentTypeFromAlias(dynamic typeAlias) {
-  /// If `typeAlias` is a factory, return its type.
+  /// If [typeAlias] is a factory, return its type.
   if (typeAlias is ReactComponentFactoryProxy) {
     return typeAlias.type;
   }
 
-  /// Check the to see if any factories are associated with `typeAlias`.
-  /// Type-check it so we don't pass an illegal type to Expando's `operator[]` method.
+  /// Check the to see if any factories are associated with [typeAlias].
+  ///
+  /// Type-check it so we don't pass an illegal type to [Expando.operator].
   if (typeAlias != null &&
       typeAlias is! num &&
       typeAlias is! String &&
@@ -128,7 +127,7 @@ dynamic getComponentTypeFromAlias(dynamic typeAlias) {
     }
   }
 
-  /// If `typeAlias` is an actual type, return it.
+  /// If [typeAlias] is an actual type, return it.
   if (isPotentiallyValidComponentType(typeAlias)) {
     return typeAlias;
   }
@@ -140,16 +139,16 @@ dynamic getComponentTypeFromAlias(dynamic typeAlias) {
 ///
 /// Valid types:
 ///
-/// * [String] tag name (DOM components)
+/// * [String] `tagName` (DOM components)
 /// * [Function] ([ReactClass]) factory (Dart/JS composite components)
 ///
-///     Note: It's impossible to determine know whether something is a ReactClass due to type-checking restrictions
-///         for JS-interop classes, so a Function type-check is the best we can do.
+/// > __NOTE:__ It's impossible to determine know whether something is a `ReactClass` due to type-checking
+///   restrictions for JS-interop classes, so a [Function] type-check is the best we can do.
 bool isPotentiallyValidComponentType(dynamic type) {
   return type is Function || type is String;
 }
 
-/// Returns an [Iterable] of all component types that are ancestors of [typeAlias].
+/// Returns an `Iterable` of all component types that are ancestors of the provided [type] alias.
 ///
 /// For example, given components A, B, and C, where B subtypes A and C subtypes B:
 ///
@@ -220,7 +219,7 @@ bool isComponentOfType(ReactElement instance, dynamic typeAlias, {
   return instanceType == type;
 }
 
-/// Returns whether [instance] is a valid ReactElement of the type associated with
+/// Returns whether [instance] is a valid [ReactElement] of the type associated with
 /// [typeAlias], which can be a component's:
 ///
 /// * [UiFactory] (Dart components only)

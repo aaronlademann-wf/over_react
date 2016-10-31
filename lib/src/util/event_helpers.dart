@@ -18,6 +18,8 @@ import 'dart:html';
 
 import 'package:react/react.dart' as react;
 
+import 'package:over_react/src/component/callback_typedefs.dart';
+
 /// Helper util that wraps a native [KeyboardEvent] in a [react.SyntheticKeyboardEvent].
 ///
 /// Used where a native [KeyboardEvent] is given and a [react.SyntheticKeyboardEvent] is needed.
@@ -48,9 +50,9 @@ react.SyntheticKeyboardEvent wrapNativeKeyboardEvent(KeyboardEvent nativeKeyboar
     nativeKeyboardEvent.shiftKey);
 }
 
-/// Helper util that wraps a native [MouseEvent] in a [react.MouseEvent].
+/// Helper util that wraps a native [MouseEvent] in a [react.SyntheticMouseEvent].
 ///
-/// Used where a native [MouseEvent] is given and a [react.MouseEvent] is needed.
+/// Used where a native [MouseEvent] is given and a [react.SyntheticMouseEvent] is needed.
 react.SyntheticMouseEvent wrapNativeMouseEvent(MouseEvent nativeMouseEvent) {
   return new react.SyntheticMouseEvent(
     nativeMouseEvent.bubbles,
@@ -82,8 +84,9 @@ react.SyntheticMouseEvent wrapNativeMouseEvent(MouseEvent nativeMouseEvent) {
     nativeMouseEvent.shiftKey);
 }
 
-/// If the consumer specifies a callback like `onChange` on one of our custom form components that are not *actually*
-/// form elements - we still need a valid [react.SyntheticFormEvent] to pass as the expected parameter to that callback.
+/// If the consumer specifies a callback like `onChange` within a custom form UI component that is not _actually_
+/// a proper [InputElement] - we still need a valid [react.SyntheticFormEvent] to pass as the expected
+/// parameter to a [FormEventCallback].
 ///
 /// This helper method generates a "fake" [react.SyntheticFormEvent], with nothing but the `target` set to [element],
 /// `type` set to [type] and `timeStamp` set to the current time. All other arguments are `noop`, `false` or `null`.

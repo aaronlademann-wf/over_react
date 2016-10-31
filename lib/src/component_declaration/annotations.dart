@@ -27,7 +27,8 @@ class Factory {
 
 /// Annotation used with the `over_react` transformer to declare a [UiProps] class for a component.
 ///
-/// Props are declared as fields, which act as stubs for generated getters/setters that proxy Map key-value pairs.
+/// Props are declared as fields, which act as stubs for generated getters/setters that proxy
+/// Map key-value pairs.
 ///
 ///     @Props()
 ///     class FooProps extends UiProps {
@@ -35,6 +36,8 @@ class Factory {
 ///     }
 ///
 /// Must be accompanied by a [Factory] and [Component] declaration.
+///
+/// Related: [AbstractProps], [PropsMixin]
 class Props implements TypedMap {
   /// A custom namespace for the keys of props defined in the annotated class,
   /// overriding the default of `'${propsClassName}.'`.
@@ -45,7 +48,8 @@ class Props implements TypedMap {
 
 /// Annotation used with the `over_react` transformer to declare a [UiState] class for a component.
 ///
-/// State properties are declared as fields, which act as stubs for generated getters/setters that proxy Map key-value pairs.
+/// State properties are declared as fields, which act as stubs for generated getters/setters that proxy
+/// Map key-value pairs.
 ///
 ///     @State()
 ///     class FooState extends UiState {
@@ -53,6 +57,8 @@ class Props implements TypedMap {
 ///     }
 ///
 /// Optional. Must be accompanied by a [Factory], [Props], and [Component] declaration.
+///
+/// Related: [AbstractState], [StateMixin]
 class State implements TypedMap {
   /// A custom namespace for the keys of state properties defined in the annotated class,
   /// overriding the default of `'${stateClassName}.'`.
@@ -69,9 +75,11 @@ class State implements TypedMap {
 ///     }
 ///
 /// Must be accompanied by a [Factory] and [Props] declaration.
+///
+/// Related: [AbstractComponent]
 class Component {
   /// Whether the component clones or passes through its children and needs to be
-  /// treated as if it were the wrapped component when passed in to [over_react.isComponentOfType].
+  /// treated as if it were the wrapped component when passed in to [isComponentOfType].
   final bool isWrapper;
 
   /// The component class of this component's "parent type".
@@ -104,7 +112,8 @@ class Component {
   });
 }
 
-/// Annotation used with the `over_react` transformer to declare an abstract [UiProps] class for an abstract component.
+/// Annotation used with the `over_react` transformer to declare an abstract [UiProps] class
+/// for an [AbstractComponent].
 ///
 /// Props are declared as fields, which act as stubs for generated getters/setters that proxy Map key-value pairs.
 ///
@@ -112,6 +121,8 @@ class Component {
 ///     abstract class QuxProps extends UiProps {
 ///       int quux;
 ///     }
+///
+/// Related: [Props], [PropsMixin]
 class AbstractProps implements TypedMap {
   /// A custom namespace for the keys of props defined in the annotated class,
   /// overriding the default of `'${propsClassName}.'`.
@@ -120,14 +131,18 @@ class AbstractProps implements TypedMap {
   const AbstractProps({this.keyNamespace: null});
 }
 
-/// Annotation used with the `over_react` transformer to declare an abstract [UiProps] class for an abstract component.
+/// Annotation used with the `over_react` transformer to declare an abstract [UiProps] class
+/// for an [AbstractComponent].
 ///
-/// State properties are declared as fields, which act as stubs for generated getters/setters that proxy Map key-value pairs.
+/// State properties are declared as fields, which act as stubs for generated getters/setters that proxy
+/// Map key-value pairs.
 ///
 ///     @AbstractState()
 ///     abstract class QuxState extends UiState {
 ///       String corge;
 ///     }
+///
+/// Related: [State], [StateMixin]
 class AbstractState implements TypedMap {
   /// A custom namespace for the keys of state properties defined in the annotated class,
   /// overriding the default of `'${stateClassName}.'`.
@@ -136,10 +151,13 @@ class AbstractState implements TypedMap {
   const AbstractState({this.keyNamespace: null});
 }
 
-/// Annotation used with the `over_react` transformer to declare an abstract [UiComponent] class for an abstract component.
+/// Annotation used with the `over_react` transformer to declare an abstract [UiComponent] class
+/// for an abstract component.
 ///
 ///     @AbstractComponent()
 ///     abstract class QuxComponent<TProps extends QuxProps> extends UiComponent<TProps> {}
+///
+/// Related: [Component]
 class AbstractComponent {
   const AbstractComponent();
 }
@@ -156,6 +174,8 @@ class AbstractComponent {
 ///     }
 ///
 /// Classes using this annotation must include the abstract `props` getter.
+///
+/// Related: [Props], [AbstractProps]
 class PropsMixin implements TypedMap {
   /// A custom namespace for the keys of props defined in the annotated class,
   /// overriding the default of `'${propsClassName}.'`.
@@ -166,7 +186,8 @@ class PropsMixin implements TypedMap {
 
 /// Annotation used with the `over_react` transformer to declare a mixin for use in a [UiState] class.
 ///
-/// State properties are declared as fields, which act as stubs for generated getters/setters that proxy Map key-value pairs.
+/// State properties are declared as fields, which act as stubs for generated getters/setters that proxy
+/// Map key-value pairs.
 ///
 ///     @StateMixin()
 ///     abstract class WaldoStateMixin {
@@ -176,6 +197,8 @@ class PropsMixin implements TypedMap {
 ///     }
 ///
 /// Classes using this annotation must include the abstract `state` getter.
+///
+/// Related: [State], [AbstractState]
 class StateMixin implements TypedMap {
   /// A custom namespace for the keys of state properties defined in the annotated class,
   /// overriding the default of `'${stateClassName}.'`.
@@ -187,7 +210,7 @@ class StateMixin implements TypedMap {
 /// Annotation used with the `over_react` transformer to customize individual accessors (props/state fields).
 ///
 ///     @Props()
-///     abstract class FooProps {
+///     class FooProps {
 ///       @Accessor(keyNamespace: '', key: 'custom_key')
 ///       String bar;
 ///     }
@@ -205,15 +228,36 @@ class Accessor {
   });
 }
 
-/// Annotation used with the `over_react` transformer to express a specific prop is required to be set.
+/// Annotation used with the `over_react` transformer to express a specific prop cannot be `null`.
 ///
-/// This is validated in `UiComponent.validateRequiredProps` which requires super calls into `componentWillMount` and
-/// `componentWillReceiveProps`.
+/// This is validated in `UiComponent.validateRequiredProps` which requires super calls into
+/// `componentWillMount` and `componentWillReceiveProps`.
 ///
 ///     @Props()
-///     abstract class FooProps {
+///     class FooProps {
 ///       @Required()
 ///       String bar;
+///     }
+///
+///     @Component()
+///     class FooComponent extends UiComponent<FooProps> {
+///       // Make sure you call `super` if you need to put anything custom
+///       // within `componentWillMount`.
+///       @override
+///       componentWillMount() {
+///         super.componentWillMount();
+///
+///         // Your custom stuff here.
+///       }
+///
+///       // Make sure you call `super` if you need to put anything custom
+///       // within `componentDidMount`.
+///       @override
+///       componentDidMount() {
+///         super.componentDidMount();
+///
+///         // Your custom stuff here.
+///       }
 ///     }
 class Required {
   /// Whether setting a prop to null is allowed.

@@ -13,13 +13,14 @@
 // limitations under the License.
 
 /// Utilities for manipulating and generating CSS class names.
+///
+/// Inspired by <https://github.com/JedWatson/classnames>.
 library over_react.class_names;
 
 import 'dart:collection';
 
-// Must import these consts because they are used in the transformed code.
-// ignore: unused_import
-import 'package:over_react/over_react.dart' show PropDescriptor, ConsumedProps;
+// Must import `PropDescriptor` and `ConsumedProps` because they are used in the transformed code.
+import 'package:over_react/over_react.dart';
 import 'package:over_react/src/component_declaration/annotations.dart';
 
 /// Typed getters/setters for props related to CSS class manipulation, and used by all over_react components.
@@ -31,8 +32,9 @@ abstract class CssClassPropsMixin {
 
   /// String of space-delimited CSS classes to be added to the resultant DOM.
   ///
-  /// All over_react components merge any added classes with this prop and the [classNameBlacklist] prop (see
-  /// [UiComponent.forwardingClassNameBuilder]).
+  /// All over_react components merge any added classes with this prop and the [classNameBlacklist] prop.
+  ///
+  /// See: [UiComponent.forwardingClassNameBuilder].
   String className;
 
   /// String of space-delimited CSS classes to be blacklisted from being added to the resultant DOM.
@@ -42,8 +44,7 @@ abstract class CssClassPropsMixin {
   String classNameBlacklist;
 }
 
-
-/// A MapView with the typed getters/setters for all CSS-class-related props.
+/// A [MapView] with the typed getters/setters for all props within [CssClassPropsMixin].
 class CssClassPropsMapView extends MapView with CssClassPropsMixin {
   /// Create a new instance backed by the specified map.
   CssClassPropsMapView(Map map) : super(map);
@@ -54,24 +55,25 @@ class CssClassPropsMapView extends MapView with CssClassPropsMixin {
   Map get props => this;
 }
 
-/// StringBuffer-backed className builder optimized for adding classNames, with support for blacklisting CSS classes.
+/// [StringBuffer]-backed `className` builder optimized for adding CSS classes,
+/// with support for blacklisting CSS classes.
 class ClassNameBuilder {
   StringBuffer _classNamesBuffer = new StringBuffer();
   StringBuffer _blacklistBuffer;
 
-  /// Creates a new, empty ClassNameBuilder.
+  /// Creates a new, empty `ClassNameBuilder`.
   ClassNameBuilder();
 
-  /// Creates a new ClassNameBuilder with className and blacklist values added from [CssClassProps.className] and
-  /// [CssClassProps.classNameBlackList], if they are specified.
+  /// Creates a new `ClassNameBuilder` with [CssClassPropsMixin.className] and [CssClassPropsMixin.classNameBlacklist]
+  /// values from the given [props] Map.
   ///
   /// This method gracefully handles null [props], as well as unspecified/null prop values.
   ClassNameBuilder.fromProps(Map props) {
     addFromProps(props);
   }
 
-  /// Adds the className and blacklist values from a [props] Map, using the
-  /// [CssClassProps.className] and [CssClassProps.classNameBlackList] values.
+  /// Adds the [CssClassPropsMixin.className] and [CssClassPropsMixin.classNameBlacklist]
+  /// values from the given [props] Map.
   ///
   /// This method gracefully handles null [props], as well as unspecified/null prop values.
   ///
@@ -88,10 +90,12 @@ class ClassNameBuilder {
       ..blacklist(cssClassProps.classNameBlacklist);
   }
 
-  /// Adds a className string. May be a single CSS class 'token', or multiple space-delimited classes,
-  /// IF [should] is true, otherwise, does nothing (convenience for helping to inline addition conditionals).
+  /// Adds the given [className] string.
   ///
-  /// There is no checking for duplicate CSS classes.
+  /// May be a single CSS class 'token', or multiple space-delimited classes IF [should] is true.
+  /// Otherwise, does nothing _(convenience for helping to inline addition conditionals)_.
+  ///
+  /// __There is no checking for duplicate CSS classes.__
   void add(String className, [bool should = true]) {
     if (!should || className == null || className == '') {
       return;
@@ -103,8 +107,8 @@ class ClassNameBuilder {
     _classNamesBuffer.write(className);
   }
 
-  /// Adds all of the CSS classes represented by [className] (a space-delimited list) to the blacklist,
-  /// IF [should] is true, otherwise, does nothing (convenience for helping to inline blacklisting conditionals).
+  /// Adds all of the CSS classes represented by [className] _(a space-delimited list)_ to the blacklist
+  /// IF [should] is true, otherwise, does nothing _(convenience for helping to inline blacklisting conditionals)_.
   ///
   /// Classes added to the blacklist will not appear in the result of [toClassName].
   void blacklist(String className, [bool should = true]) {
@@ -122,9 +126,10 @@ class ClassNameBuilder {
     _blacklistBuffer.write(className);
   }
 
-  /// Returns a String representation of the built className, which includes any added classes, and none of the blacklisted classes.
+  /// Returns a String representation of the built className, which includes any added classes, and none of the
+  /// blacklisted classes.
   ///
-  /// Duplicate classes will be added.
+  /// __Duplicate classes will be added.__
   String toClassName() {
     String className = _classNamesBuffer.toString();
 
@@ -140,16 +145,17 @@ class ClassNameBuilder {
   }
 
   /// Returns a String representation of only the blacklisted classes.
+  ///
   /// Useful for blacklist forwarding.
   ///
-  /// Duplicate classes will be added.
+  /// __Duplicate classes will be added.__
   String toClassNameBlacklist() {
     return _blacklistBuffer == null || _blacklistBuffer.isEmpty
       ? null
       : _blacklistBuffer.toString();
   }
 
-  /// Returns a Map with the [CssClassProps.className] and [CssClassProps.classNameBlackList] props
+  /// Returns a Map with the [CssClassPropsMixin.className] and [CssClassPropsMixin.classNameBlacklist] props
   /// populated from the return values of [toClassName] and [toClassNameBlacklist], respectively.
   ///
   /// This method, along with [addFromProps], is useful for merging sets of className/blacklist props.
@@ -169,7 +175,7 @@ class ClassNameBuilder {
 ///
 /// Useful for splitting CSS class name strings into class tokens, or `data-test-id` values into individual test IDs.
 ///
-/// Handles leading and trailing spaces, as well as token separated by multiple spaces.
+/// Handles leading and trailing spaces, as well as tokens separated by multiple spaces.
 ///
 /// Example:
 ///

@@ -13,8 +13,9 @@
 // limitations under the License.
 
 /// Thanks!
+///
 /// https://github.com/marcj/css-element-queries/blob/master/src/ResizeSensor.js
-library resize_sensor;
+library over_react.resize_sensor;
 
 import 'dart:collection';
 import 'dart:html';
@@ -23,17 +24,14 @@ import 'package:browser_detect/browser_detect.dart';
 import 'package:over_react/over_react.dart';
 import 'package:react/react.dart' as react;
 
-// Callback for [ResizeSensorEvent]s
+/// Callback for [ResizeSensorEvent]s
 typedef void ResizeSensorHandler(ResizeSensorEvent event);
 
 /// A wrapper component that detects when its parent is resized.
 ///
-/// This component _must_ be put in a relative or absolutely positioned
-/// container.
+/// This component _must_ be put in a relative or absolutely positioned container.
 ///
 ///     (ResizeSensor()..onResize = () => print('resized'))(children)
-///
-/// See: <https://docs.workiva.org/web_skin_dart/latest/components/#resize-sensor>.
 @Factory()
 UiFactory<ResizeSensorProps> ResizeSensor;
 
@@ -175,8 +173,10 @@ class ResizeSensorComponent extends UiComponent<ResizeSensorProps> {
     )(children);
   }
 
-  /// When the expand or collapse sensors are resized, builds a [ResizeSensorEvent] and calls
-  /// props.onResize with it. Then, calls through to [_reset()].
+  /// When the expand or collapse sensors are resized, this builds a [ResizeSensorEvent] and calls
+  /// [ResizeSensorProps.onResize] with it.
+  ///
+  /// Then, calls through to [_reset].
   void _handleSensorScroll(react.SyntheticEvent _) {
     Element sensor = findDomNode(this);
 
@@ -191,8 +191,8 @@ class ResizeSensorComponent extends UiComponent<ResizeSensorProps> {
     }
   }
 
-  /// Update the width and height on [expandSensorChild], and the scroll position on
-  /// [expandSensorChild] and [collapseSensor].
+  /// Update the width and height on [_expandSensorChildRef], and the scroll position on
+  /// [_expandSensorChildRef] and [_collapseSensorRef].
   ///
   /// Additionally update the state with the new [_lastWidth] and [_lastHeight].
   void _reset() {
@@ -284,7 +284,7 @@ class ResizeSensorEvent {
   ResizeSensorEvent(this.newWidth, this.newHeight, this.prevWidth, this.prevHeight);
 }
 
-/// A MapView with the typed getters/setters for all HitArea display variation props.
+/// A [MapView] with the typed getters/setters for all [ResizeSensorProps] variations.
 class ResizeSensorPropsMixinMapView extends MapView with ResizeSensorPropsMixin {
   /// Create a new instance backed by the specified map.
   ResizeSensorPropsMixinMapView(Map map) : super(map);

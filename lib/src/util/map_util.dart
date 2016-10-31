@@ -19,11 +19,16 @@ import 'dart:collection';
 import 'package:over_react/src/component/prop_mixins.dart';
 import 'package:over_react/src/component_declaration/transformer_helpers.dart';
 
-/// Returns a copy of the specified props map, omitting reserved React props by default,
-/// in addition to any specified keys.
+/// Returns a copy of the specified [props] `Map`, omitting reserved React props by default,
+/// in addition to any specified [keysToOmit] and keys within specified [keySetsToOmit].
 ///
 /// Useful for prop forwarding.
-Map getPropsToForward(Map props, {bool omitReactProps: true, bool onlyCopyDomProps: false, Iterable keysToOmit, Iterable<Iterable> keySetsToOmit}) {
+Map getPropsToForward(Map props, {
+    bool omitReactProps: true,
+    bool onlyCopyDomProps: false,
+    Iterable keysToOmit,
+    Iterable<Iterable> keySetsToOmit
+}) {
   Map propsToForward = new Map.from(props);
 
   if (omitReactProps) {

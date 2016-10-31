@@ -14,7 +14,9 @@
 
 library key_constants;
 
-/// Key values that are returned from [react.SyntheticKeyboardEvent.key].
+import 'package:react/react.dart' show SyntheticKeyboardEvent;
+
+/// Key values that are returned from [SyntheticKeyboardEvent.key].
 ///
 ///See: <https://w3c.github.io/uievents/#h-fixed-virtual-key-codes>.
 abstract class KeyValue {
