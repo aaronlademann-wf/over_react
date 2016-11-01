@@ -50,9 +50,8 @@ main() {
           return new List.generate(arity, (_) => new TestGenericType());
         }
 
-        List<TestGenericType> generateBadTypeArgs() {
-          // ignore: Type check failed
-          return new List.generate(arity, (_) => new Object() as TestGenericType);
+        List generateBadTypeArgs() {
+          return new List.generate(arity, (_) => new Object());
         }
 
         group('chain()', () {

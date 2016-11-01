@@ -18,7 +18,7 @@ abstract class FluxUiProps<ActionsT, StoresT> extends UiProps {
   /// There is no strict rule on the [ActionsT] type. Depending on application
   /// structure, there may be [Action]s available directly on this object, or
   /// this object may represent a hierarchy of actions.
-  ActionsT get actions => props[_actionsPropKey] as ActionsT;
+  ActionsT get actions => props[_actionsPropKey] as ActionsT; // ignore: avoid_as
   set actions(ActionsT value) => props[_actionsPropKey] = value;
 
   /// The prop defined by [StoresT].
@@ -37,7 +37,7 @@ abstract class FluxUiProps<ActionsT, StoresT> extends UiProps {
   /// [StoresT] should be a class that provides access to these multiple stores.
   /// Then, you can explicitly select the [Store] instances that should be
   /// listened to by overriding [_FluxComponentMixin.redrawOn].
-  StoresT get store => props[_storePropKey] as StoresT;
+  StoresT get store => props[_storePropKey] as StoresT; // ignore: avoid_as
   set store(StoresT value) => props[_storePropKey] = value;
 }
 
@@ -83,11 +83,11 @@ abstract class _FluxComponentMixin<TProps extends FluxUiProps> implements Batche
     ///
     /// [Store]s included in the [getStoreHandlers] result will be listened to and wired up to their
     /// respective handlers.
-    Map<Store, Function> handlers = new Map.fromIterable(redrawOn(),
+    Map<Store, StoreHandler> handlers = new Map.fromIterable(redrawOn(),
         value: (_) => (_) => redraw())..addAll(getStoreHandlers());
 
     handlers.forEach((store, handler) {
-      StreamSubscription subscription = store.listen(handler as StoreHandler);
+      StreamSubscription subscription = store.listen(handler);
       _subscriptions.add(subscription);
     });
   }
@@ -136,7 +136,7 @@ abstract class _FluxComponentMixin<TProps extends FluxUiProps> implements Batche
   /// If possible, however, [redrawOn] should be used instead of this in order
   /// to avoid keeping additional state within this component and manually
   /// managing redraws.
-  Map<Store, Function> getStoreHandlers() {
+  Map<Store, StoreHandler> getStoreHandlers() {
     return {};
   }
 
