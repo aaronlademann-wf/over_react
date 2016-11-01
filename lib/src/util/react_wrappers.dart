@@ -135,7 +135,7 @@ bool isDomElement(dynamic instance) {
   return isValidElement(instance) && (instance as ReactElement).type is String;
 }
 
-/// Returns whether [instance] is a composite [ReactComponent].
+/// Returns whether [object] is a composite [ReactComponent].
 ///
 /// __Not for external use.__
 bool _isCompositeComponent(dynamic object) {
@@ -247,7 +247,7 @@ typedef CallbackRef(ref);
 
 /// Returns a function that chains [element]'s callback ref (if one exists) with [newCallbackRef].
 ///
-/// Throws [ArgumentError] if [element.ref] is a `String` ref or otherwise not a [CallbackRef].
+/// Throws [ArgumentError] if `element.ref is a `String` ref or otherwise not a [CallbackRef].
 ///
 /// TODO: This method makes assumptions about how react-dart does callback refs for dart components, so this method should be moved there (UIP-1118).
 CallbackRef chainRef(ReactElement element, CallbackRef newCallbackRef) {

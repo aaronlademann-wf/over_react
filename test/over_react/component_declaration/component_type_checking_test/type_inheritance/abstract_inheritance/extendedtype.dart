@@ -19,13 +19,13 @@ import 'package:over_react/over_react.dart';
 import './abstract.dart';
 
 @Factory()
-UiFactory<TestExtendtypeProps> TestExtendtype;
+UiFactory<TestExtendTypeProps> TestExtendType;
 
 @Props()
-class TestExtendtypeProps extends TestAbstractProps {}
+class TestExtendTypeProps extends TestAbstractProps {}
 
 @Component(subtypeOf: TestAbstractComponent)
-class TestExtendtypeComponent extends TestAbstractComponent<TestExtendtypeProps> {
+class TestExtendTypeComponent extends TestAbstractComponent<TestExtendTypeProps> {
   @override
   render() => Dom.div()();
 }

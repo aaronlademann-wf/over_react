@@ -133,7 +133,7 @@ abstract class Dom {
   /// Returns a new [DomPropsMixin] that renders a [TableColElement]
   /// with getters/setters for all DOM-related props.
   static DomProps col() => new DomProps(react.col);
-  /// Returns a new [DomPropsMixin] that renders a [TableColGroupElement]
+  /// Returns a new [DomPropsMixin] that renders an HTML `<colgroup>` [Element]
   /// with getters/setters for all DOM-related props.
   static DomProps colgroup() => new DomProps(react.colgroup);
   /// Returns a new [DomPropsMixin] that renders an HTML `<data>` [Element]

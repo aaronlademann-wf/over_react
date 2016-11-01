@@ -209,7 +209,7 @@ Further paragraphs come after blank lines.
 
 ## Developer Workflow
 
-The `over_react` developer workflow couldn't be any more simple!
+The `over_react` developer workflow could not be any more simple!
 
 To serve the demos within `web/`, or start the transformer, run:
 

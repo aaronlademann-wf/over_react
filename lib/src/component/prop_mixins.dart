@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/// Various prop related mixins to be used with [UiComponent] descendants.
+/// Various prop related mixins to be used with `UiComponent` descendants.
 library over_react.prop_mixins;
 
 import 'dart:html';
@@ -211,7 +211,7 @@ abstract class UbiquitousDomPropsMixin {
 
   /// Callback for when an [Element] becomes "focused".
   ///
-  /// The [Element] is represented by [document.activeElement].
+  /// The [Element] is represented by [Document.activeElement].
   ///
   /// Related: [onBlur]
   FocusEventCallback onFocus;

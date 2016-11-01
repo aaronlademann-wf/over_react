@@ -149,8 +149,8 @@ abstract class UiStatefulComponent<TProps extends UiProps, TState extends UiStat
   @override @toBeGenerated TState typedStateFactory(Map stateMap) => throw new UngeneratedError(member: #typedStateFactory);
 }
 
-/// A [MapView]-like class with strongly-typed getters/setters for React props that
-/// is also capable of creating [react.Component] instances.
+/// A `MapView`-like class with strongly-typed getters/setters for React props that
+/// is also capable of creating component instances.
 ///
 /// For use as a typed view into existing props [Map]s, or as a builder to create new component
 /// instances via a fluent-style interface.
@@ -168,7 +168,7 @@ abstract class UiProps extends component_base.UiProps with GeneratedClass {
   @override @toBeGenerated Function get componentFactory => throw new UngeneratedError(member: #componentFactory);
 }
 
-/// A [MapView]-like class with strongly-typed getters/setters for React state.
+/// A `MapView`-like class with strongly-typed getters/setters for React state.
 ///
 /// Use with the over_react transformer via the @[annotations.State] annotation.
 abstract class UiState extends component_base.UiState with GeneratedClass {

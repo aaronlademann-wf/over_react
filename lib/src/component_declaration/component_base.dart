@@ -14,6 +14,9 @@
 
 library over_react.component_declaration.component_base;
 
+import 'package:react/react.dart' as react;
+import 'package:react/react_client.dart';
+
 import 'package:over_react/over_react.dart' show
     ClassNameBuilder,
     CssClassPropsMixin,
@@ -26,8 +29,7 @@ import 'package:over_react/over_react.dart' show
     unindent,
     PropError;
 import 'package:over_react/src/component_declaration/component_type_checking.dart';
-import 'package:react/react.dart' as react;
-import 'package:react/react_client.dart';
+import 'package:over_react/src/transformer/impl_generation.dart';
 
 export 'package:over_react/src/component_declaration/component_type_checking.dart' show isComponentOfType, isValidElementOfType;
 
@@ -38,7 +40,7 @@ export 'package:over_react/src/component_declaration/component_type_checking.dar
 /// treated as if it were the wrapped component.
 ///
 /// * [builderFactory]/[componentClass]: the [UiFactory] and [UiComponent] members to be potentially
-/// used as types for [isComponentOfType]/[getComponentFactory].
+/// used as types for [isComponentOfType] or [ImplGenerator.getComponentFactoryName]
 ///
 /// * [displayName]: the name of the component for use when debugging.
 ReactDartComponentFactoryProxy registerComponent(react.Component dartComponentFactory(), {
@@ -95,14 +97,14 @@ abstract class UiComponent<TProps extends UiProps> extends react.Component {
   /// The props for the non-forwarding props defined in this component.
   Iterable<ConsumedProps> get consumedProps => null;
 
-  /// Returns a copy of this component's props with [consumedPropKeys] omitted.
+  /// Returns a copy of this component's props with [consumedProps] keys omitted.
   Map copyUnconsumedProps() {
     var consumedPropKeys = consumedProps?.map((ConsumedProps consumedProps) => consumedProps.keys) ?? const [];
 
     return copyProps(keySetsToOmit: consumedPropKeys);
   }
 
-  /// Returns a copy of this component's props with [consumedPropKeys] and non-DOM props omitted.
+  /// Returns a copy of this component's props with [consumedProps] keys and non-DOM props omitted.
   Map copyUnconsumedDomProps() {
     var consumedPropKeys = consumedProps?.map((ConsumedProps consumedProps) => consumedProps.keys) ?? const [];
 
@@ -254,9 +256,9 @@ abstract class UiStatefulComponent<TProps extends UiProps, TState extends UiStat
 }
 
 
-/// A [MapView]-like class with strongly-typed getters/setters for React state.
+/// A `MapView`-like class with strongly-typed getters/setters for React state.
 ///
-/// Note: Implements [MapViewMixin] instead of extending it so that the abstract [State] declarations
+/// Note: Implements [MapViewMixin] instead of extending it so that the abstract `State` declarations
 /// don't need a constructor. The generated implementations can mix that functionality in.
 abstract class UiState extends Object with MapViewMixin, StateMapViewMixin implements Map {}
 
@@ -268,13 +270,13 @@ const String defaultTestIdKey = 'data-test-id';
 /// Used in [UiProps.modifyProps].
 typedef PropsModifier(Map props);
 
-/// A [MapView]-like class with strongly-typed getters/setters for React props that
+/// A `MapView`-like class with strongly-typed getters/setters for React props that
 /// is also capable of creating [react.Component] instances.
 ///
 /// For use as a typed view into existing props [Map]s, or as a builder to create new component
 /// instances via a fluent-style interface.
 ///
-/// Note: Implements [MapViewMixin] instead of extending it so that the abstract [Props] declarations
+/// Note: Implements [MapViewMixin] instead of extending it so that the abstract `Props` declarations
 /// don't need a constructor. The generated implementations can mix that functionality in.
 abstract class UiProps
     extends Object with MapViewMixin, PropsMapViewMixin, ReactPropsMixin, UbiquitousDomPropsMixin, CssClassPropsMixin
@@ -338,7 +340,9 @@ abstract class UiProps
     return props[key];
   }
 
-  /// Gets the `data-test-id` prop key to [value] for use in a testing environment.
+  /// Gets the `data-test-id` prop key value for use in a testing environment.
+  ///
+  /// __Deprecated.__ Use [getTestId] instead.
   @Deprecated('2.0.0')
   String get testId {
     return getTestId();
@@ -414,7 +418,7 @@ abstract class UiProps
   Function get componentFactory;
 }
 
-/// Works in conjunction with [MapViewMixin] to provide [MapView]-like
+/// Works in conjunction with [MapViewMixin] to provide `MapView`-like
 /// functionality to [UiProps] subclasses.
 abstract class PropsMapViewMixin {
   /// The props maintained by this builder and used passed into the component when built.
@@ -502,7 +506,7 @@ class ConsumedProps {
   ///
   /// This includes string keys, and required prop validation related fields.
   final List<PropDescriptor> props;
-  /// Top-level acessor of string keys of props stored in [props].
+  /// Top-level accessor of string keys of props stored in [props].
   final List<String> keys;
 
   const ConsumedProps(this.props, this.keys);

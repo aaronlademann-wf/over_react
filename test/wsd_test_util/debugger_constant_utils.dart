@@ -17,7 +17,7 @@ library debugger_constant_utils;
 import 'package:over_react/over_react.dart';
 import 'package:test/test.dart';
 
-/// Common tests that verify the values of `degbugDescription`s of [DebugFriendlyConstant]s.
+/// Common tests that verify the values of [DebugFriendlyConstant.debugDescription]s.
 void sharedDebugConstTest(String constName, Map<DebugFriendlyConstant, String> constToDebugDesc) {
   group(constName, () {
     constToDebugDesc.forEach((DebugFriendlyConstant key, String value) {

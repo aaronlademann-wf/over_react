@@ -58,7 +58,7 @@ final CallbackUtil1Arg<SyntheticWheelEvent> wheelEventCallbacks             = co
 /// Provides chaining utilities for [Callback].
 final CallbackUtil0Arg callbacks                                            = const CallbackUtil0Arg();
 
-/// Provides chaining utilities for [ResizeSensorHandler].
+/// Provides chaining utilities for `ResizeSensorHandler`.
 final CallbackUtil1Arg<ResizeSensorEvent> resizeEventCallbacks              = const CallbackUtil1Arg<ResizeSensorEvent>();
 
 

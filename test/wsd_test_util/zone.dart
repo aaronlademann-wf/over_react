@@ -34,7 +34,7 @@ void storeZone([Zone zone]) {
   _zone = zone;
 }
 
-/// Calls [expect] in package:test/test.dart in the zone stored in [setZone].
+/// Calls [expect] in package:test/test.dart in the zone stored in `setZone`.
 ///
 /// Useful for expectations in blocks called in other zones.
 void zonedExpect(actual, matcher,

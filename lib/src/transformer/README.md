@@ -83,7 +83,7 @@ own components using the [transformer diff view](#debugging-with-the-diff-view).
     ```
     
     It does this since the class we defined in our code inherits pseudo-abstract stubbed 
-    members and doesn't have the constructor we need.
+    members and does not have the constructor we need.
 
 3. A mixin that implements the pseudo-abstract stubbed members of our component class is 
 generated and mixed in to our existing component class.
@@ -119,7 +119,7 @@ generated and mixed in to our existing component class.
     Note that the `typedPropsFactory` variable is wired up to use the props implementation 
     class's constructor. This lets us get an instance of that class when we use the `props` 
     getter and the `newProps()` method, and is necessary since the code we wrote 
-    doesn't have a proper constructor.
+    does not have a proper constructor.
 
 4. Our fully implemented component class is registered with the [react-dart] wrapper.
 

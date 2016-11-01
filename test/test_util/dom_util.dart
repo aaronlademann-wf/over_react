@@ -67,7 +67,7 @@ void triggerDocumentClick(Element target) {
 ///
 /// Verifies that the [target] element is not a detached node.
 ///
-/// This is neccessary because IE 11 `focus` events are async.
+/// This is necessary because IE 11 `focus` events are async.
 ///
 /// See: <https://connect.microsoft.com/IE/feedback/details/2238257/ie11-focus-change-delayed-when-using-the-focus-method>.
 Future triggerFocus(Element target) {

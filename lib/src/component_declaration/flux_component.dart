@@ -31,7 +31,7 @@ abstract class FluxUiProps<ActionsT, StoresT> extends UiProps {
   ///
   /// If this component only needs data from a single [Store], then [StoresT]
   /// should be an instance of [Store]. This allows the default implementation
-  /// of [redrawOn] to automatically subscribe to the store.
+  /// of [_FluxComponentMixin.redrawOn] to automatically subscribe to the store.
   ///
   /// If this component needs data from multiple [Store] instances, then
   /// [StoresT] should be a class that provides access to these multiple stores.
@@ -109,11 +109,11 @@ abstract class _FluxComponentMixin<TProps extends FluxUiProps> implements Batche
   /// When any of the returned [Store]s update their state, this component will
   /// redraw.
   ///
-  /// If [store] is of type [Store] (in other words, if this component has a
+  /// If [FluxUiProps.store] is of type [Store] (in other words, if this component has a
   /// single Store passed in), this will return a list with said store as the
   /// only element by default. Otherwise, an empty list is returned.
   ///
-  /// If [store] is actually a composite object with multiple stores, this
+  /// If [FluxUiProps.store] is actually a composite object with multiple stores, this
   /// method should be overridden to return a list with the stores that should
   /// be listened to.
   ///

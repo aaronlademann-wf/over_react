@@ -17,10 +17,13 @@ library test_util.custom_matchers;
 import 'dart:html';
 
 import 'package:matcher/matcher.dart';
-import 'package:over_react/over_react.dart';
 import 'package:react/react.dart' as react;
+import 'package:react/react_client.dart';
+import 'package:react/react_client/react_interop.dart';
 import 'package:react/react_test_utils.dart' as react_test_utils;
 import 'package:test/test.dart';
+
+import 'package:over_react/over_react.dart';
 
 /// Match a list of class names on a component
 class ClassNameMatcher extends Matcher {
@@ -281,7 +284,7 @@ class _IsFocused extends Matcher {
 /// A matcher that matches the currently focused element (`document.activeElement`).
 const Matcher isFocused = const _IsFocused();
 
-/// A matcher to verify that a [RequiredPropError] is thrown with a provided `RequiredPropError.message`
+/// A matcher to verify that a [PropError.required] is thrown with a provided [message].
 ///
 /// __Note__: The message is matched rather than the [Error] instance due to Dart's wrapping of all `throw`
 ///  as a [DomException]
@@ -295,8 +298,8 @@ Matcher throwsRequiredPropError(String message) {
   ));
 }
 
-/// A matcher to verify that a [InvalidPropCombinationError] is thrown with a provided `InvalidPropCombinationError.prop1`,
-/// `InvalidPropCombinationError.prop2`, and `InvalidPropCombinationError.message`.
+/// A matcher to verify that a [PropError.combination] is thrown with a provided [prop1],
+/// [prop2], and [message].
 ///
 /// __Note__: The message is matched rather than the [Error] instance due to Dart's wrapping of all `throw`
 ///  as a [DomException]
@@ -312,7 +315,7 @@ Matcher throwsInvalidPropCombinationError(String prop1, String prop2, String mes
   ));
 }
 
-/// A matcher to verify that the [InvalidPropValueError] is thrown with a provided `InvalidPropValueError.message`
+/// A matcher to verify that the [PropError.value] is thrown with a provided [message].
 ///
 ///  Deprecated: Use [throwsPropError_Value].
 @Deprecated('2.0.0')
@@ -324,7 +327,7 @@ Matcher throwsInvalidPropError(dynamic value, String name, String message){
   ));
 }
 
-/// A matcher to verify that a [PropError] is thrown with a provided `propName` and `message`.
+/// A matcher to verify that a [PropError] is thrown with a provided [propName] and [message].
 ///
 /// __Note__: The message is matched rather than the [Error] instance due to Dart's wrapping of all `throw`
 ///  as a [DomException]
@@ -335,7 +338,7 @@ Matcher throwsPropError(String propName, [String message = '']) {
   ));
 }
 
-/// A matcher to verify that a [PropError].required is thrown with a provided `propName` and `message`.
+/// A matcher to verify that a [PropError.required] is thrown with a provided [propName] and [message].
 ///
 /// __Note__: The message is matched rather than the [Error] instance due to Dart's wrapping of all `throw`
 ///  as a [DomException]
@@ -346,7 +349,7 @@ Matcher throwsPropError_Required(String propName, [String message = '']) {
   ));
 }
 
-/// A matcher to verify that a [PropError].value is thrown with a provided `invalidValue`, `propName`, and `message`.
+/// A matcher to verify that a [PropError.value] is thrown with a provided [invalidValue], [propName], and [message].
 ///
 /// __Note__: The message is matched rather than the [Error] instance due to Dart's wrapping of all `throw`
 ///  as a [DomException]
@@ -359,7 +362,7 @@ Matcher throwsPropError_Value(dynamic invalidValue, String propName, [String mes
   ));
 }
 
-/// A matcher to verify that a [PropError] is thrown with a provided `propName`, `prop2Name`, and `message`.
+/// A matcher to verify that a [PropError.combination] is thrown with a provided [propName], [prop2Name], and [message].
 ///
 /// __Note__: The message is matched rather than the [Error] instance due to Dart's wrapping of all `throw`
 ///  as a [DomException]

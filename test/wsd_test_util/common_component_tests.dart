@@ -180,7 +180,7 @@ void testPropForwarding(BuilderOnlyUiFactory factory, dynamic childrenFactory(),
     for (var forwardingTarget in forwardingTargets) {
       Map actualProps = getProps(forwardingTarget);
 
-      // If the forwarding target is a DOM element it will should not have invalid DOM props forwared to it.
+      // If the forwarding target is a DOM element it will should not have invalid DOM props forwarded to it.
       if (isDomElement(forwardingTarget)) {
         otherProps.forEach((key, value) {
           expect(actualProps, isNot(containsPair(key, value)));

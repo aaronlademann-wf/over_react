@@ -19,6 +19,7 @@ import 'package:over_react/src/component_declaration/component_base.dart' show U
 import 'package:over_react/src/util/react_wrappers.dart';
 import 'package:react/react_client.dart';
 import 'package:react/react_client/js_interop_helpers.dart';
+import 'package:react/react_client/react_interop.dart';
 
 // ----------------------------------------------------------------------
 //   Component type registration and internal type metadata management
