@@ -48,9 +48,9 @@ react.SyntheticKeyboardEvent wrapNativeKeyboardEvent(KeyboardEvent nativeKeyboar
     nativeKeyboardEvent.shiftKey);
 }
 
-/// Helper util that wraps a native [MouseEvent] in a [react.MouseEvent].
+/// Helper util that wraps a native [MouseEvent] in a `react.SyntheticMouseEvent`.
 ///
-/// Used where a native [MouseEvent] is given and a [react.MouseEvent] is needed.
+/// Used where a native [MouseEvent] is given and a `react.SyntheticMouseEvent` is needed.
 react.SyntheticMouseEvent wrapNativeMouseEvent(MouseEvent nativeMouseEvent) {
   return new react.SyntheticMouseEvent(
     nativeMouseEvent.bubbles,
@@ -83,9 +83,9 @@ react.SyntheticMouseEvent wrapNativeMouseEvent(MouseEvent nativeMouseEvent) {
 }
 
 /// If the consumer specifies a callback like `onChange` on one of our custom form components that are not *actually*
-/// form elements - we still need a valid [react.SyntheticFormEvent] to pass as the expected parameter to that callback.
+/// form elements - we still need a valid `react.SyntheticFormEvent` to pass as the expected parameter to that callback.
 ///
-/// This helper method generates a "fake" [react.SyntheticFormEvent], with nothing but the `target` set to [element],
+/// This helper method generates a "fake" `react.SyntheticFormEvent`, with nothing but the `target` set to [element],
 /// `type` set to [type] and `timeStamp` set to the current time. All other arguments are `noop`, `false` or `null`.
 react.SyntheticFormEvent fakeSyntheticFormEvent(Element element, String type) {
   return new react.SyntheticFormEvent(

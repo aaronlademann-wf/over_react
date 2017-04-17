@@ -49,7 +49,7 @@ abstract class AriaPropsMixin {
   /// Indicates whether assistive technologies will present all, or only parts of, the changed region
   /// based on the change notifications defined by the aria-relevant attribute. See related aria-relevant.
   ///
-  /// Both accessibility APIs and the Document Object Model [DOM] provide events to allow the assistive
+  /// Both accessibility APIs and the Document Object Model provide events to allow the assistive
   /// technologies to determine changed areas of the document.
   ///
   /// When the content of a live region changes, user agents SHOULD examine the changed element
@@ -243,7 +243,7 @@ abstract class AriaPropsMixin {
   ///
   /// It is recommended that authors key visibility of elements off this attribute, rather than
   /// change visibility and separately have to remember to update this property. CSS 2 provides
-  /// a way to select on attribute values ([CSS]). The following CSS declaration makes content visible
+  /// a way to select on attribute values. The following CSS declaration makes content visible
   /// unless the aria-hidden attribute is true; scripts need only update the value of this attribute
   /// to change visibility:
   ///
@@ -308,7 +308,7 @@ abstract class AriaPropsMixin {
   /// use aria-label. There may be instances where the name of an element cannot be determined programmatically
   /// from the content of the element, and there are cases where providing a visible label is not
   /// the desired user experience. Most host languages provide an attribute that could be used to
-  /// name the element (e.g., the title attribute in HTML [HTML]), yet this could present a browser
+  /// name the element (e.g., the title attribute in HTML), yet this could present a browser
   /// tooltip. In the cases where a visible label or visible tooltip is undesirable, authors MAY
   /// set the accessible name of the element using aria-label. As required by the text alternative
   /// computation, user agents give precedence to aria-labelledby over aria-label when computing
@@ -538,7 +538,7 @@ abstract class AriaPropsMixin {
   /// technologies, but assistive technologies are not required to present changes of all the relevant
   /// types.
   ///
-  /// Both accessibility APIs and Document Object Model Level 2 Events [DOM] provides events to
+  /// Both accessibility APIs and Document Object Model Level 2 Events provides events to
   /// allow assistive technologies to determine changed areas of the document.
   ///
   /// When aria-relevant is not defined, an element's value is inherited from the nearest ancestor
@@ -908,7 +908,7 @@ class Role {
   ///  by speaking the text alternative of the new active descendant element. Authors SHOULD associate
   ///  the combobox textfield with its listbox using aria-owns.
   ///
-  /// Note: In XForms [XFORMS] the same select can have one of 3 appearances: combo-box, drop-down
+  /// Note: In XForms the same select can have one of 3 appearances: combo-box, drop-down
   /// box, or group of radio-buttons. Many browsers allow users to type ahead to existing choices
   /// in a drop-down select widget. This specification does not constrain the presentation of the
   /// combo box.
@@ -1233,8 +1233,8 @@ class Role {
 
   /// Content that represents a mathematical expression.
   ///
-  /// Content with the role math is intended to be marked up in an accessible format such as MathML
-  /// [MATHML], or with another type of textual representation such as TeX or LaTeX, which can be
+  /// Content with the role math is intended to be marked up in an accessible format such as MathML,
+  /// or with another type of textual representation such as TeX or LaTeX, which can be
   /// readily converted to an accessible format by assistive technologies.
   ///
   /// This role provides a hook whereby a plug-in mechanism can provide multi-modal access to compliant

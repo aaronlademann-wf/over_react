@@ -23,9 +23,10 @@ import 'package:over_react/over_react.dart';
 abstract class AbstractTransitionProps extends UiProps {
   /// Number of transitions to occur within the [AbstractTransitionComponent].
   ///
-  /// _If the [AbstractTransitionComponent] does not transition set [AbstractTransitionProps.transition] to [Transition.NONE] rather than setting this to 0._
+  /// _Do not set this to `0`. If the [AbstractTransitionComponent] does not have a transition,
+  /// set [AbstractTransitionComponent.hasTransition] to `false`._
   ///
-  /// Default: 1
+  /// Default: `1`
   int transitionCount;
 
   /// Optional callback that fires before the [AbstractTransitionComponent] is hidden.
@@ -49,7 +50,7 @@ abstract class AbstractTransitionProps extends UiProps {
 abstract class AbstractTransitionState extends UiState {
   /// The current phase of transition the [AbstractTransitionComponent] is in.
   ///
-  /// Default:  [AbstractTransitionComponent.initiallyShown] ? [TransitionState.SHOWN] : [TransitionState.HIDDEN]
+  /// Default:  [AbstractTransitionComponent.initiallyShown] ? [TransitionPhase.SHOWN] : [TransitionPhase.HIDDEN]
   TransitionPhase transitionPhase;
 }
 
@@ -100,7 +101,8 @@ abstract class AbstractTransitionState extends UiState {
 ///   * [hide]
 ///   * [toggle]
 @AbstractComponent()
-abstract class AbstractTransitionComponent<T extends AbstractTransitionProps, S extends AbstractTransitionState> extends UiStatefulComponent<T, S> {
+abstract class AbstractTransitionComponent<T extends AbstractTransitionProps, S extends AbstractTransitionState>
+    extends UiStatefulComponent<T, S> {
   @override
   Map getDefaultProps() => (newProps()
     ..transitionCount = 1

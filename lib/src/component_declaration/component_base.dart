@@ -40,7 +40,7 @@ export 'package:over_react/src/component_declaration/component_type_checking.dar
 /// treated as if it were the wrapped component.
 ///
 /// * [builderFactory]/[componentClass]: the [UiFactory] and [UiComponent] members to be potentially
-/// used as types for [isComponentOfType]/[getComponentFactory].
+/// used as types for [isComponentOfType]/[getComponentTypeFromAlias].
 ///
 /// * [displayName]: the name of the component for use when debugging.
 ReactDartComponentFactoryProxy registerComponent(react.Component dartComponentFactory(), {
@@ -98,14 +98,14 @@ abstract class UiComponent<TProps extends UiProps> extends react.Component {
   /// The props for the non-forwarding props defined in this component.
   Iterable<ConsumedProps> get consumedProps => null;
 
-  /// Returns a copy of this component's props with [consumedPropKeys] omitted.
+  /// Returns a copy of this component's props with the `keys` from [consumedProps] omitted.
   Map copyUnconsumedProps() {
     var consumedPropKeys = consumedProps?.map((ConsumedProps consumedProps) => consumedProps.keys) ?? const [];
 
     return copyProps(keySetsToOmit: consumedPropKeys);
   }
 
-  /// Returns a copy of this component's props with [consumedPropKeys] and non-DOM props omitted.
+  /// Returns a copy of this component's props with the `keys` from [consumedProps] and non-DOM props omitted.
   Map copyUnconsumedDomProps() {
     var consumedPropKeys = consumedProps?.map((ConsumedProps consumedProps) => consumedProps.keys) ?? const [];
 
@@ -135,8 +135,8 @@ abstract class UiComponent<TProps extends UiProps> extends react.Component {
     });
   }
 
-  /// Returns a new ClassNameBuilder with className and blacklist values added from [CssClassProps.className] and
-  /// [CssClassProps.classNameBlackList], if they are specified.
+  /// Returns a new ClassNameBuilder with className and blacklist values added from [CssClassPropsMixin.className] and
+  /// [CssClassPropsMixin.classNameBlacklist], if they are specified.
   ///
   /// This method should be used as the basis for the classNames of components receiving forwarded props.
   ClassNameBuilder forwardingClassNameBuilder() {
@@ -255,7 +255,7 @@ abstract class UiStatefulComponent<TProps extends UiProps, TState extends UiStat
 
 /// A [dart.collection.MapView]-like class with strongly-typed getters/setters for React state.
 ///
-/// Note: Implements MapViewMixin instead of extending it so that the abstract [State] declarations
+/// Note: Implements MapViewMixin instead of extending it so that the abstract [UiState] declarations
 /// don't need a constructor. The generated implementations can mix that functionality in.
 abstract class UiState extends Object with MapViewMixin, StateMapViewMixin implements Map {}
 
@@ -270,10 +270,10 @@ typedef PropsModifier(Map props);
 /// A [dart.collection.MapView]-like class with strongly-typed getters/setters for React props that
 /// is also capable of creating React component instances.
 ///
-/// For use as a typed view into existing props [Maps], or as a builder to create new component
+/// For use as a typed view into existing props [Map]s, or as a builder to create new component
 /// instances via a fluent-style interface.
 ///
-/// Note: Implements MapViewMixin instead of extending it so that the abstract [Props] declarations
+/// Note: Implements MapViewMixin instead of extending it so that the abstract [UiProps] declarations
 /// don't need a constructor. The generated implementations can mix that functionality in.
 abstract class UiProps
     extends Object with MapViewMixin, PropsMapViewMixin, ReactPropsMixin, UbiquitousDomPropsMixin, CssClassPropsMixin
@@ -336,7 +336,7 @@ abstract class UiProps
     return props[key];
   }
 
-  /// Gets the `data-test-id` prop key to [value] for use in a testing environment.
+  /// Gets the `data-test-id` prop key value for use in a testing environment.
   @Deprecated('2.0.0')
   String get testId {
     return getTestId();

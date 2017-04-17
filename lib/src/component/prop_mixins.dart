@@ -20,6 +20,7 @@ library over_react.prop_mixins;
 import 'package:over_react/over_react.dart' show PropDescriptor, ConsumedProps;
 import 'package:over_react/src/component/callback_typedefs.dart';
 import 'package:over_react/src/component_declaration/annotations.dart';
+import 'package:over_react/src/component_declaration/component_base.dart';
 
 /// Typed getters/setters for reserved React props.
 /// To be used as a mixin for React components and builders.

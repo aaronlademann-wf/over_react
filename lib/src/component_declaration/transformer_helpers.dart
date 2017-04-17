@@ -193,7 +193,7 @@ class _ToBeGenerated {
   const _ToBeGenerated();
 }
 
-/// Thrown when stubbed code (usually annotated with [ToBeGenerated]) that expects to be
+/// Thrown when stubbed code (usually annotated with [toBeGenerated]) that expects to be
 /// overridden by generated code is called unexpectedly.
 ///
 /// Usually this is due to improper usage of the code-generating transformer.

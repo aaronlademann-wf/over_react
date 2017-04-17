@@ -422,7 +422,7 @@ class ImplGenerator {
             annotations.Accessor accessorMeta = instantiateAnnotation(field, annotations.Accessor);
             annotations.Accessor requiredProp = getConstantAnnotation(field, 'requiredProp', annotations.requiredProp);
             annotations.Accessor nullableRequiredProp = getConstantAnnotation(field, 'nullableRequiredProp', annotations.nullableRequiredProp);
-            annotations.Required requiredMeta = instantiateAnnotation(field, annotations.Required);
+            annotations.Required requiredMeta = instantiateAnnotation(field, annotations.Required); // ignore: deprecated_member_use
 
             String individualKeyNamespace = accessorMeta?.keyNamespace ?? keyNamespace;
             String individualKey = accessorMeta?.key ?? accessorName;

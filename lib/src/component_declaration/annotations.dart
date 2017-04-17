@@ -15,6 +15,8 @@
 // Dummy annotations that would be used by Pub code generator
 library over_react.component_declaration.annotations;
 
+import 'package:over_react/src/component_declaration/component_base.dart';
+
 /// Annotation used with the `over_react` transformer to declare a [UiFactory] for a component.
 ///
 ///     @Factory()
@@ -71,7 +73,7 @@ class State implements TypedMap {
 /// Must be accompanied by a [Factory] and [Props] declaration.
 class Component {
   /// Whether the component clones or passes through its children and needs to be
-  /// treated as if it were the wrapped component when passed in to [over_react.isComponentOfType].
+  /// treated as if it were the wrapped component when passed in to [isComponentOfType].
   final bool isWrapper;
 
   /// The component class of this component's "parent type".

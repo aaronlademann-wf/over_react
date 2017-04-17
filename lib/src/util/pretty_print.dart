@@ -14,6 +14,8 @@
 
 library over_react.pretty_print;
 
+import 'package:over_react/src/component_declaration/component_base.dart';
+
 /// Returns a pretty-printed version of [map], with namespaced keys grouped together.
 ///
 /// Useful for debugging props/state maps (and build in to [UiProps.toString]/[UiState.toString]).

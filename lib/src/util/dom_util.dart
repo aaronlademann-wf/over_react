@@ -63,7 +63,7 @@ Element getActiveElement() {
 ///
 /// See: <https://github.com/dart-lang/sdk/issues/22967>
 ///
-/// Related: [isTextInputElementBase]
+/// Related: [supportsSelectionRange]
 const List<String> inputTypesWithSelectionRangeSupport = const [
   'search',
   'text',

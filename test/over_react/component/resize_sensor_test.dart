@@ -113,6 +113,8 @@ void main() {
       action();
 
       await resizesDone;
+
+      resizes.close();
     }
 
     /// Expect resize sensor invokes registered `onInitialize` callback.

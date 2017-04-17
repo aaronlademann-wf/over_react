@@ -19,6 +19,7 @@ import 'package:over_react/src/component_declaration/component_base.dart' show U
 import 'package:over_react/src/util/react_wrappers.dart';
 import 'package:react/react_client.dart';
 import 'package:react/react_client/js_interop_helpers.dart';
+import 'package:react/react_client/react_interop.dart';
 
 // ----------------------------------------------------------------------
 //   Component type registration and internal type metadata management
@@ -149,7 +150,7 @@ bool isPotentiallyValidComponentType(dynamic type) {
   return type is Function || type is String;
 }
 
-/// Returns an [Iterable] of all component types that are ancestors of [typeAlias].
+/// Returns an [Iterable] of all component types that are ancestors of [type].
 ///
 /// For example, given components A, B, and C, where B subtypes A and C subtypes B:
 ///

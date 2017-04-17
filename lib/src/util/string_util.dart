@@ -15,7 +15,7 @@
 library over_react.string_util;
 
 /// Allows the use of `'''` string blocks, without having to unindent them when used within something like the
-/// [markdown] method.
+/// `markdown` method.
 ///
 /// __Replace this:__
 ///     (Component()

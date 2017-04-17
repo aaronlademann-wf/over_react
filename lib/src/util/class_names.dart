@@ -21,6 +21,7 @@ import 'dart:collection';
 // ignore: unused_import
 import 'package:over_react/over_react.dart' show PropDescriptor, ConsumedProps;
 import 'package:over_react/src/component_declaration/annotations.dart';
+import 'package:over_react/src/component_declaration/component_base.dart';
 
 /// Typed getters/setters for props related to CSS class manipulation, and used by all over_react components.
 ///
@@ -61,8 +62,8 @@ class ClassNameBuilder {
   /// Creates a new, empty ClassNameBuilder.
   ClassNameBuilder();
 
-  /// Creates a new ClassNameBuilder with className and blacklist values added from [CssClassProps.className] and
-  /// [CssClassProps.classNameBlackList], if they are specified.
+  /// Creates a new ClassNameBuilder with className and blacklist values added from [CssClassPropsMixin.className] and
+  /// [CssClassPropsMixin.classNameBlacklist], if they are specified.
   ///
   /// This method gracefully handles null [props], as well as unspecified/null prop values.
   ClassNameBuilder.fromProps(Map props) {
@@ -70,7 +71,7 @@ class ClassNameBuilder {
   }
 
   /// Adds the className and blacklist values from a [props] Map, using the
-  /// [CssClassProps.className] and [CssClassProps.classNameBlackList] values.
+  /// [CssClassPropsMixin.className] and [CssClassPropsMixin.classNameBlacklist] values.
   ///
   /// This method gracefully handles null [props], as well as unspecified/null prop values.
   ///
@@ -148,7 +149,7 @@ class ClassNameBuilder {
       : _blacklistBuffer.toString();
   }
 
-  /// Returns a Map with the [CssClassProps.className] and [CssClassProps.classNameBlackList] props
+  /// Returns a Map with the [CssClassPropsMixin.className] and [CssClassPropsMixin.classNameBlacklist] props
   /// populated from the return values of [toClassName] and [toClassNameBlacklist], respectively.
   ///
   /// This method, along with [addFromProps], is useful for merging sets of className/blacklist props.

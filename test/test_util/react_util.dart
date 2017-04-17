@@ -67,7 +67,7 @@ var _shallowRenderers = [];
 
 /// Adds [renderedInstance] to [_renderedInstances].
 ///
-/// If [_renderedInstances.length] is larger than or equal to [maxRenderedQueueLength] the oldest instance will be
+/// If the length of [_renderedInstances] is larger than or equal to [maxRenderedQueueLength] the oldest instance will be
 /// unmounted and removed from the list.
 void _addToRenderedInstanceQueue(dynamic renderedInstance) {
   if (_renderedInstances.length >= maxRenderedQueueLength) {
@@ -80,8 +80,8 @@ void _addToRenderedInstanceQueue(dynamic renderedInstance) {
 
 /// Adds [renderer] to [_shallowRenderers].
 ///
-/// If [_shallowRenderers.length] is larger than or equal to [maxShallowRendererQueueLength] the oldest rendered will be
-/// unmounted and removed from the list.
+/// If the length of [_shallowRenderers] is larger than or equal to [maxShallowRendererQueueLength] the oldest rendered
+/// will be unmounted and removed from the list.
 void _addToShallowRendererQueue(react_test_utils.ReactShallowRenderer renderer) {
   if (_shallowRenderers.length >= maxShallowRendererQueueLength) {
     _shallowRenderers.last.unmount();
@@ -104,7 +104,7 @@ void _addToShallowRendererQueue(react_test_utils.ReactShallowRenderer renderer) 
 /// Shallow-renders a component using [react_test_utils.ReactShallowRenderer].
 ///
 /// By default the rendered instance will be added to [_renderedInstances] via [_addToRenderedInstanceQueue] to not
-/// have this happen set [addToRenderedQueue] to false.
+/// have this happen set [addToRendererQueue] to false.
 ///
 /// See: <https://facebook.github.io/react/docs/test-utils.html#shallow-rendering>.
 ReactElement renderShallow(ReactElement instance, {bool addToRendererQueue: true}) {
@@ -255,7 +255,7 @@ bool _hasTestId(Map props, String key, String value) {
 /// This method works for:
 ///
 /// * [ReactComponent] render trees (output of [render])
-/// * [ReactElement] trees (output of [renderShallow]/[Component.render])
+/// * [ReactElement] trees (output of [renderShallow]/[UiComponent.render])
 ///
 /// __Example:__
 ///
