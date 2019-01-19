@@ -38,6 +38,7 @@ export 'src/component/dummy_component.dart';
 export 'src/component/prop_mixins.dart';
 export 'src/component/prop_typedefs.dart';
 export 'src/component/resize_sensor.dart';
+export 'src/component/styled_component.dart';
 export 'src/component_declaration/flux_component.dart';
 export 'src/component_declaration/built_redux_component.dart';
 export 'src/component_declaration/transformer_helpers.dart';

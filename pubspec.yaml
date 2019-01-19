@@ -35,6 +35,7 @@ dev_dependencies:
   dependency_validator: ^1.2.2
   mockito: ^4.0.0
   over_react_test: ^2.0.0
+  sass_builder: ^2.1.2
   source_gen: ^0.9.0
   test: '>=0.12.30 <2.0.0'
 
@@ -44,4 +45,8 @@ dependency_overrides:
     git:
       url: git@github.com:Workiva/over_react_test.git
       ref: 21307533927e1bfba2a14131be4ea74eb54a1ff5 # from orcm2
+  react:
+    git:
+      url: git@github.com:aaronlademann-wf/react-dart.git
+      ref: 6c970756f411ad33dd06d925b6d241e2ed83d79c # from spike-web-components
 

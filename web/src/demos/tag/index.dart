@@ -8,9 +8,9 @@ import '../../demos.dart';
 main() {
   setClientConfiguration();
 
-  react_dom.render(tagBasicDemo(), querySelector('$demoMountNodeSelectorPrefix--tag-basic'));
-
-  react_dom.render(tagContextualDemo(), querySelector('$demoMountNodeSelectorPrefix--tag-contextual'));
-
-  react_dom.render(tagPillsDemo(), querySelector('$demoMountNodeSelectorPrefix--tag-pills'));
+//  react_dom.render(tagBasicDemo(), querySelector('$demoMountNodeSelectorPrefix--tag-basic'));
+//
+//  react_dom.render(tagContextualDemo(), querySelector('$demoMountNodeSelectorPrefix--tag-contextual'));
+//
+//  react_dom.render(tagPillsDemo(), querySelector('$demoMountNodeSelectorPrefix--tag-pills'));
 }

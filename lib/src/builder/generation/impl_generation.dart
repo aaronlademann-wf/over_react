@@ -58,6 +58,8 @@ class ImplGenerator {
 
   generate(ParsedDeclarations declarations) {
     if (declarations.declaresComponent) {
+      final isStyledComponent = (declarations.component.meta.styles?.isNotEmpty ?? false)
+          || (declarations.component.styleUrlsValue?.isNotEmpty ?? false);
       final factoryName = declarations.factory.node.variables.variables.first.name.toString();
 
       final consumerPropsName = declarations.props.node.name.toString();
@@ -114,7 +116,7 @@ class ImplGenerator {
         ..writeln('final $generatedComponentFactoryName = registerComponent(() => new $componentClassImplMixinName(),')
         ..writeln('    builderFactory: $factoryName,')
         ..writeln('    componentClass: $componentClassName,')
-        ..writeln('    isWrapper: ${declarations.component.meta.isWrapper},')
+        ..writeln('    isWrapper: ${isStyledComponent || declarations.component.meta.isWrapper},')
         ..writeln('    parentType: $parentTypeParam,$parentTypeParamComment')
         ..writeln('    displayName: ${stringLiteral(factoryName)}')
         ..writeln(');')
@@ -139,7 +141,7 @@ class ImplGenerator {
 
       outputContentsBuffer.write(_generateConcretePropsImpl(
         AccessorType.props, consumerPropsName, propsImplName, generatedComponentFactoryName,
-        propKeyNamespace, declarations.props, propsAccessorsMixinName, consumablePropsName));
+        propKeyNamespace, declarations.props, propsAccessorsMixinName, consumablePropsName, isStyledComponent));
 
       typedPropsFactoryImpl =
           '  @override\n'
@@ -195,12 +197,17 @@ class ImplGenerator {
       // ----------------------------------------------------------------------
       //   Component implementation
       // ----------------------------------------------------------------------
+      String styledComponentMixin = '';
+      if (isStyledComponent) {
+        styledComponentMixin = ' with StyledComponentMixin';
+      }
+
       outputContentsBuffer
         ..writeln('// Concrete component implementation mixin.')
         ..writeln('//')
         ..writeln('// Implements typed props/state factories, defaults `consumedPropKeys` to the keys')
         ..writeln('// generated for the associated props class.')
-        ..writeln('class $componentClassImplMixinName extends $componentClassName {')
+        ..writeln('class $componentClassImplMixinName extends $componentClassName$styledComponentMixin {')
         ..write(typedPropsFactoryImpl)
         ..write(typedStateFactoryImpl)
         ..writeln('  /// Let [UiComponent] internals know that this class has been generated.')
@@ -211,7 +218,60 @@ class ImplGenerator {
         ..writeln('  /// Used in [UiProps.consumedProps] if [consumedProps] is not overridden.')
         ..writeln('  @override')
         ..writeln('  final List<ConsumedProps> \$defaultConsumedProps = '
-                        'const [${_metaConstantName(consumablePropsName)}];')
+                        'const [${_metaConstantName(consumablePropsName)}];');
+
+      if (isStyledComponent) {
+        outputContentsBuffer
+          ..writeln('')
+          ..writeln('  @override')
+          ..writeln("  String get styles => '${declarations.component.meta.styles}';")
+          ..writeln('')
+          ..writeln('  @override')
+          ..writeln('  List<String> get styleUrls => ${declarations.component.styleUrlsValue};')
+          ..writeln('')
+          ..writeln('  @override')
+          ..writeln('  bool get loadStyleUrlsInShadowRoot => styles.isNotEmpty || ${declarations.component.meta.loadStyleUrlsInShadowRoot};')
+          ..writeln('')
+          ..writeln('  @override')
+          ..writeln('  DomPropsFactory get domElementFactory => new StyledComponentPropsMapView(props).domElementFactory ?? Dom.span;')
+          ..writeln('')
+          ..writeln('  @override')
+          ..writeln("  String get displayName => ${stringLiteral(factoryName)};")
+          ..writeln('')
+          ..writeln('  @override')
+          ..writeln('  void componentWillMount() {')
+          ..writeln("    super.componentWillMount();")
+          ..writeln("    handleStyledComponentWillMount();")
+          ..writeln("  }")
+          ..writeln('')
+          ..writeln('  @override')
+          ..writeln('  void componentDidMount() {')
+          ..writeln("    super.componentDidMount();")
+          ..writeln("    handleStyledComponentDidMount().then((shouldRedraw) { if (shouldRedraw) redraw(); });")
+          ..writeln("  }")
+          ..writeln('')
+          ..writeln('  @override')
+          ..writeln('  void componentDidUpdate(_, __) {')
+          ..writeln("    super.componentDidUpdate(_, __);")
+          ..writeln("    handleStyledComponentDidUpdate();")
+          ..writeln("  }")
+          ..writeln('')
+          ..writeln('  @override')
+          ..writeln('  void componentWillUnmount() {')
+          ..writeln("    super.componentWillUnmount();")
+          ..writeln("    handleStyledComponentWillUnmount();")
+          ..writeln("  }")
+          ..writeln('')
+          ..writeln('  @override')
+          ..writeln('  dynamic get renderedChildInstance => super.render();')
+          ..writeln('')
+          ..writeln('  @override')
+          ..writeln("  render() {")
+          ..writeln("    return !renderIntoShadowDom ? cloneElement(super.render(), domProps()..aria.hidden = isResolving) : customElementFactory()(domProps(props)..aria.hidden = isResolving, []);")
+          ..writeln("  }");
+      }
+
+      outputContentsBuffer
         ..writeln('}');
 
       var implementsTypedPropsStateFactory = declarations.component.node.members.any((member) =>
@@ -644,11 +704,12 @@ class ImplGenerator {
   }
 
   String _generateConcretePropsImpl(AccessorType type, String consumerName, String implName,
-      String componentFactoryName, String propKeyNamespace, NodeWithMeta<ClassDeclaration, annotations.Props> node, String accessorsMixinName, String consumableName) {
+      String componentFactoryName, String propKeyNamespace, NodeWithMeta<ClassDeclaration, annotations.Props> node, String accessorsMixinName, String consumableName, bool isStyledComponent) {
     var typeParamsOnClass = node.node.typeParameters?.toSource() ?? '';
     var typeParamsOnSuper = removeBoundsFromTypeParameters(node.node.typeParameters);
+    var styledPropsMixinName = isStyledComponent ? ', StyledComponentPropsMixin, \$StyledComponentPropsMixin // ignore: mixin_of_non_class, undefined_class\n' : '';
     var classDeclaration = new StringBuffer()
-      ..write('class $implName$typeParamsOnClass extends $consumerName$typeParamsOnSuper with $accessorsMixinName$typeParamsOnSuper implements $consumableName$typeParamsOnSuper {\n');
+      ..write('class $implName$typeParamsOnClass extends $consumerName$typeParamsOnSuper with $accessorsMixinName$typeParamsOnSuper$styledPropsMixinName implements $consumableName$typeParamsOnSuper {\n');
     return (new StringBuffer()
         ..writeln('// Concrete props implementation.')
         ..writeln('//')

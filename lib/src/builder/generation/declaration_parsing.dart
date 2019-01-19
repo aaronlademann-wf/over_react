@@ -438,9 +438,12 @@ class ParsedDeclarations {
 
 class ComponentNode extends NodeWithMeta<ClassDeclaration, annotations.Component> {
   static const String _subtypeOfParamName = 'subtypeOf';
+  static const String _styleUrlsParamName = 'styleUrls';
 
   /// The value of the `subtypeOf` parameter passed in to this node's annotation.
   Identifier subtypeOfValue;
+
+  List<String> styleUrlsValue;
 
   ComponentNode(unit) : super(unit) {
     // Perform special handling for the `subtypeOf` parameter of this node's annotation.
@@ -460,6 +463,41 @@ class ComponentNode extends NodeWithMeta<ClassDeclaration, annotations.Component
       this.subtypeOfValue = subtypeOfParam.expression;
       this.unsupportedArguments.remove(subtypeOfParam);
     }
+
+    NamedExpression styleUrlsParam = this.unsupportedArguments.firstWhere((expression) {
+      return expression is NamedExpression && expression.name.label.name == _styleUrlsParamName;
+    }, orElse: () => null);
+
+    if (styleUrlsParam != null) {
+      if (styleUrlsParam.expression is! ListLiteral) {
+        throw '`$_styleUrlsParamName` must be a list: $styleUrlsParam';
+      }
+
+      this.styleUrlsValue = (styleUrlsParam.expression as ListLiteral).elements.map((exp) => exp.toString()).toList();
+      this.unsupportedArguments.remove(styleUrlsParam);
+    } else {
+      this.styleUrlsValue = const [];
+    }
+
+//    if (stylesParam != null) {
+//      this.stylesValue = stylesParam.expression;
+//      this.unsupportedArguments.remove(stylesParam);
+//      print(stylesParam.expression);
+////      final source = stylesParam.expression.toSource();
+////      this.stylesValue = source.substring(1,source.length - 1).split(',');
+////      print('stylesParam: ${source}');
+//    }
+////    else {
+////      this.stylesValue = new ListLi;
+////    }
+//
+//    if (styleUrlsParam != null) {
+//      this.styleUrlsValue = styleUrlsParam.expression;
+//      this.unsupportedArguments.remove(styleUrlsParam);
+//    }
+//    else {
+//      this.styleUrlsValue = const [];
+//    }
   }
 }
 

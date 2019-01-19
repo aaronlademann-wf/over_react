@@ -98,9 +98,18 @@ class Component {
   ///     isComponentOfType(Bar()(), Foo); // true (due to parent type-checking)
   final Type subtypeOf;
 
+  final String styles;
+
+  final List<String> styleUrls;
+
+  final bool loadStyleUrlsInShadowRoot;
+
   const Component({
       this.isWrapper: false,
-      this.subtypeOf
+      this.subtypeOf,
+      this.styles: '',
+      this.styleUrls: const [],
+      this.loadStyleUrlsInShadowRoot: false,
   });
 }
 

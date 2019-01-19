@@ -3,7 +3,7 @@ builders:
     import: "package:over_react/src/builder/builder.dart"
     builder_factories: ["overReactBuilder"]
     build_extensions: {".dart" : [".over_react.g.dart"]}
-    auto_apply: all_packages
+    auto_apply: root_package
     build_to: cache
 
 targets:
@@ -30,4 +30,7 @@ targets:
             - "test/builder/**"
             - "lib/src/builder/**"
             - "tool/**"
+      sass_builder:
+        options:
+          outputStyle: expanded
 
