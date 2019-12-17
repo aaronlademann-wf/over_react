@@ -29,6 +29,9 @@ AppState _$AppStateFromJson(Map<String, dynamic> json) {
         (json['editableUserIds'] as List)?.map((e) => e as String)?.toList(),
     highlightedUserIds:
         (json['highlightedUserIds'] as List)?.map((e) => e as String)?.toList(),
+    theme: json['theme'] == null
+        ? null
+        : MuiTheme.fromJson(json['theme'] as Map<String, dynamic>),
   );
 }
 
@@ -42,4 +45,5 @@ Map<String, dynamic> _$AppStateToJson(AppState instance) => <String, dynamic>{
       'selectedUserIds': instance.selectedUserIds,
       'editableUserIds': instance.editableUserIds,
       'highlightedUserIds': instance.highlightedUserIds,
+      'theme': instance.theme?.toJson(),
     };

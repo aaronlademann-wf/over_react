@@ -3,12 +3,14 @@ import 'dart:html';
 import 'package:over_react/over_react.dart';
 import 'package:over_react/over_react_redux.dart';
 import 'package:todo_client/src/actions.dart';
+import 'package:todo_client/src/components/shared/constants.dart';
+import 'package:todo_client/src/components/shared/theme_provider.dart';
 
 import 'package:todo_client/src/models/user.dart';
 import 'package:todo_client/src/components/shared/avatar_with_colors.dart';
 import 'package:todo_client/src/components/shared/list_item_expansion_panel_summary.dart';
 import 'package:todo_client/src/components/shared/list_item_mixin.dart';
-import 'package:todo_client/src/components/shared/material_ui.dart';
+import 'package:react_material_ui/react_material_ui.dart';
 import 'package:todo_client/src/components/shared/redraw_counter_component_mixin.dart';
 import 'package:todo_client/src/components/shared/todo_item_text_field.dart';
 import 'package:todo_client/src/components/task_count.dart';
@@ -36,6 +38,7 @@ UiFactory<UserListItemProps> UserListItem = connect<AppState, UserListItemProps>
       ..isSelected = isSelected
       ..isEditable = isEditable
       ..isHighlighted = isHighlighted
+      ..theme = state.theme
     );
   },
 )(_$UserListItem); // ignore: undefined_identifier
@@ -46,7 +49,7 @@ mixin UserListItemPropsMixin on UiProps, ListItemPropsMixin {
   User model;
 }
 
-class UserListItemProps = UiProps with ListItemPropsMixin, UserListItemPropsMixin;
+class UserListItemProps = UiProps with AppThemeProviderPropsMixin, ListItemPropsMixin, UserListItemPropsMixin;
 
 mixin UserListItemStateMixin on UiState, ListItemStateMixin {
   @override

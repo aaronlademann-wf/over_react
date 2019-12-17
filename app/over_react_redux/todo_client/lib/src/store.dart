@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:over_react/over_react_redux.dart';
+import 'package:react_material_ui/theming.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_dev_tools/redux_dev_tools.dart';
 
@@ -8,6 +11,7 @@ import 'package:todo_client/src/models/todo.dart';
 import 'package:todo_client/src/models/user.dart';
 import 'package:todo_client/src/actions.dart';
 import 'package:todo_client/src/local_storage.dart';
+import 'package:todo_client/src/theme.dart';
 
 part 'store.g.dart';
 
@@ -38,6 +42,7 @@ class AppState {
   List<String> selectedUserIds;
   List<String> editableUserIds;
   List<String> highlightedUserIds;
+  MuiTheme theme;
 
   AppState(this.name, {
     this.todos,
@@ -48,9 +53,17 @@ class AppState {
     this.selectedUserIds,
     this.editableUserIds,
     this.highlightedUserIds,
-  }) : assert(name != null && name.isNotEmpty);
+    MuiTheme theme,
+  }) : assert(name != null && name.isNotEmpty), theme = theme ?? getTodoAppTheme(theme);
 
   factory AppState.fromJson(Map<String, dynamic> json) => _$AppStateFromJson(json);
+//  {
+//    // A theme has previously been serialized.
+//    // We need to merge that data with a fresh set of a data just in case the
+//    // schema has changed since it was last generated to prevent RTEs.
+//    final prev = ;
+//    return prev..theme = MuiTheme({});
+//  }
   Map<String, dynamic> toJson() => _$AppStateToJson(this);
 }
 
@@ -61,6 +74,7 @@ AppState appStateReducer(AppState state, dynamic action) {
   }
 
   return AppState(stateNameReducer(state.name, action),
+    theme: themeReducer(state.theme, action),
     todos: todosReducer(state.todos, action),
     users: usersReducer(state.users, action),
     editableTodoIds: editableTodosReducer(state.editableTodoIds, action),
@@ -98,6 +112,14 @@ Middleware<AppState> localStorageMiddleware() {
     localTodoAppStorage?.updateCurrentState(store.state);
   };
 }
+
+final themeReducer = combineReducers<MuiTheme>([
+  TypedReducer<MuiTheme, UpdateThemeAction>((theme, action) {
+    // Generates an updated theme by merging in a map with updated values
+//    return MuiTheme(action.value);
+  return action.value;
+  }),
+]);
 
 // ------------ ITEM REDUCERS ------------------
 

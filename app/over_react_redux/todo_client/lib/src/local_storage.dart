@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:html';
 
+import 'package:react_material_ui/theming.dart';
 import 'package:todo_client/src/store.dart';
 
 /// The `window.localStorage` interface for our application.
@@ -31,6 +32,7 @@ class TodoAppLocalStorage extends MapBase<String, /*encodable*/Object> {
     selectedUserIds: [],
     editableUserIds: [],
     highlightedUserIds: [],
+    theme: defaultMuiTheme,
   );
 
   static bool isInitialized() => window.localStorage[localStorageKey] != null

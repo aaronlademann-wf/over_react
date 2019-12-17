@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:react_material_ui/theming.dart';
 
 import 'package:todo_client/src/models/todo.dart';
 import 'package:todo_client/src/models/user.dart';
@@ -22,6 +23,15 @@ class _Action</*JsonSerializable*/T> {
     // Otherwise, assume it's a JSON primitive
     return value;
   }
+}
+
+class UpdateThemeAction extends _Action<MuiTheme> {
+  UpdateThemeAction(MuiTheme value) : super(value);
+
+  // @override
+  // Map<String, dynamic> toJson() {
+  //   return {'value': this.value.toJson()};
+  // }
 }
 
 class LoadStateFromLocalStorageAction extends _Action<String> {

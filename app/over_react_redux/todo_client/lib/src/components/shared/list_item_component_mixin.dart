@@ -3,10 +3,13 @@ import 'package:over_react/over_react.dart';
 
 import 'package:todo_client/src/models/base_model.dart';
 import 'package:todo_client/src/components/shared/list_item_mixin.dart';
-import 'package:todo_client/src/components/shared/material_ui.dart';
 
 mixin ListItemMixin<M extends BaseModel, T extends ListItemPropsMixin, S extends ListItemStateMixin>
     on UiStatefulComponent2<T, S> {
+  // TODO: How do we use a hook like this instead of having to utilize something like the
+  //  `AppThemeProviderPropsMixin` props mixin + `connect.mapStateToProps` to access state.theme?
+//  final theme = useTheme();
+
   @override
   @mustCallSuper
   get defaultProps => (newProps()
@@ -27,9 +30,12 @@ mixin ListItemMixin<M extends BaseModel, T extends ListItemPropsMixin, S extends
   };
 
   @protected
-  Map<String, dynamic> get highlightedItemStyle => {
-    if (props.isHighlighted) 'backgroundColor': muiColors['yellow']['50'],
-  };
+  Map<String, dynamic> get highlightedItemStyle {
+    return {
+      // TODO: How do we use a hook like useTheme() to access `theme.palette.action.hover` instead of the `AppThemeProviderPropsMixin` props mixin?
+      if (props.isHighlighted) 'backgroundColor': props.theme.palette.action.hover,
+    };
+  }
 
   bool get hasDetails;
 

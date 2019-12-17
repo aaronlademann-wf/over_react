@@ -2,8 +2,9 @@ import 'dart:html';
 
 import 'package:meta/meta.dart';
 import 'package:over_react/over_react.dart';
+import 'package:react_material_ui/react_material_ui.dart';
 
-import 'package:todo_client/src/components/shared/material_ui.dart';
+import 'package:todo_client/src/components/shared/constants.dart';
 
 part 'create_input.over_react.g.dart';
 
@@ -28,7 +29,7 @@ class CreateInputComponent extends UiComponent2<CreateInputProps> {
 
   @override
   render() {
-    final propsToForward = {...props}..remove('onCreate');
+    final propsToForward = Map.of(props)..remove('onCreate');
 
     return Box({...shrinkToFitProps},
       TextField({

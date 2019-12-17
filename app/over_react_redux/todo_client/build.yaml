@@ -8,3 +8,11 @@ targets:
               - "test/unit/browser/redux/**_test.dart"
             "test/unit/_templates/react_components_test_template.html":
               - "test/unit/browser/components/**_test.dart"
+      build_web_compilers|entrypoint:
+        release_options:
+          # List any dart2js specific args here, or omit it.
+          dart2js_args:
+            # Omit type checks TODO change to -O4 at some point (e.g., --trust-primitives)
+            - -O3
+            # Disable minification for easier test/example debugging
+            - --no-minify

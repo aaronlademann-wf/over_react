@@ -1,31 +1,40 @@
+import 'dart:html';
+
+import 'package:react/react.dart' as react;
 import 'package:over_react/over_react.dart';
 
 import 'package:todo_client/src/components/app_bar/app_bar_local_storage_menu.dart';
-import 'package:todo_client/src/components/shared/material_ui.dart';
+import 'package:react_material_ui/react_material_ui.dart';
 
-part 'app_bar.over_react.g.dart';
-
-UiFactory<TodoAppBarProps> TodoAppBar =
-    _$TodoAppBar; // ignore: undefined_identifier
-
-mixin TodoAppBarProps on UiProps {}
-
-class TodoAppBarComponent extends UiComponent2<TodoAppBarProps> {
-  @override
-  render() {
-    return Fragment()(
-      AppBar(props,
-        Toolbar({},
-          Box({'flexGrow': 1},
-            Typography({
-              'variant': 'h6',
-            }, 'OverReact Redux Todo Demo App'),
-          ),
-          AppBarLocalStorageMenu()(),
+final TodoAppBar = react.registerFunctionComponent((Map props) {
+  final theme = useTheme();
+  return Fragment()(
+    AppBar(Map.of(props)..remove('onThemePaletteTypeToggle'),
+      Toolbar({},
+        Box({'flexGrow': 1},
+          Typography({'variant': 'h6', 'className': classes['title']}, 'OverReact Todo Demo App'),
         ),
+        // <FormControlLabel
+        //        control={
+        //          <Switch checked={state.checkedA} onChange={handleChange('checkedA')} value="checkedA" />
+        //        }
+        //        label="Secondary"
+        //      />
+        FormControlLabel({
+          'control': Switch({
+            'checked': theme.palette.type == 'light',
+            'onChange': (SyntheticFormEvent event) {
+              CheckboxInputElement target = event.target;
+              final newThemePaletteType = target.checked ? 'light' : 'dark';
+              (props['onThemePaletteTypeToggle'] as Function)(newThemePaletteType, theme);
+            },
+            'value': 'lightsAreOn',
+          }),
+          'label': 'Lights',
+        }),
+        AppBarLocalStorageMenu()(),
       ),
-      Toolbar({}),
-    );
-  }
-}
-
+    ),
+    Toolbar({'key': 'fakeAppBarToPushContentBelowFixedAppBar'}),
+  );
+}, displayName: 'TodoAppBar');
